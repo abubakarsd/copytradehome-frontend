@@ -44,6 +44,11 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminWallets from './pages/admin/AdminWallets';
 import AdminTradeHistory from './pages/admin/AdminTradeHistory';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminDeposits from './pages/admin/AdminDeposits';
+import AdminWithdrawals from './pages/admin/AdminWithdrawals';
+import AdminCopyTrading from './pages/admin/AdminCopyTrading';
+import AdminSignals from './pages/admin/AdminSignals';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -118,7 +123,11 @@ function App() {
           <Route index element={<AdminDashboard />} />
           <Route path="wallets" element={<AdminWallets />} />
           <Route path="trade-history" element={<AdminTradeHistory />} />
-          {/* Future routes: users, deposits, etc. */}
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="deposits" element={<AdminDeposits />} />
+          <Route path="withdrawals" element={<AdminWithdrawals />} />
+          <Route path="copy-trading" element={<AdminCopyTrading />} />
+          <Route path="signals" element={<AdminSignals />} />
         </Route>
       </Routes>
     </BrowserRouter>
