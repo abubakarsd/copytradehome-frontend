@@ -38,6 +38,13 @@ import ProfileWallets from './pages/ProfileWallets';
 
 import CopyExpertPage from './pages/CopyExpertPage';
 import CopyExpertDetailsPage from './pages/CopyExpertDetailsPage';
+
+// Admin Imports
+import AdminLayout from './components/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminWallets from './pages/admin/AdminWallets';
+import AdminTradeHistory from './pages/admin/AdminTradeHistory';
+
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
@@ -104,6 +111,14 @@ function App() {
           <Route path="profile/password" element={<ProfilePassword />} />
           <Route path="profile/notifications" element={<ProfileNotifications />} />
           <Route path="profile/wallets" element={<ProfileWallets />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="wallets" element={<AdminWallets />} />
+          <Route path="trade-history" element={<AdminTradeHistory />} />
+          {/* Future routes: users, deposits, etc. */}
         </Route>
       </Routes>
     </BrowserRouter>
