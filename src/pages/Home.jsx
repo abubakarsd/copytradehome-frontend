@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../assets/css/home.css';
@@ -13,6 +14,15 @@ import Sale from '../components/sections/Sale';
 const Home = () => {
   return (
     <>
+      <Helmet>
+        <title>Home | CopyTradeHome</title>
+        <meta property="og:title" content="Home | CopyTradeHome" />
+        <meta property="og:description" content="Trade stocks, crypto, and copy experts with CopyTradeHome." />
+        <meta property="og:image" content="/assets/images/banner-02.png" />
+        <meta name="twitter:title" content="Home | CopyTradeHome" />
+        <meta name="twitter:description" content="Trade stocks, crypto, and copy experts with CopyTradeHome." />
+        <meta name="twitter:image" content="/assets/images/banner-02.png" />
+      </Helmet>
       <Header />
       <main>
         {/* Banner Section */}

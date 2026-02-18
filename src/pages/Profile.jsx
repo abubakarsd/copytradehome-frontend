@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "../context/AuthContext";
 import { toast } from 'react-toastify';
+import { Helmet } from 'react-helmet-async';
 
 const Profile = () => {
     const { user, updateProfile } = useAuth();
@@ -62,6 +63,15 @@ const Profile = () => {
 
     return (
         <div className="container-fluid page-container main-body-container">
+            <Helmet>
+                <title>My Account | CopyTradeHome</title>
+                <meta property="og:title" content="My Account | CopyTradeHome" />
+                <meta property="og:description" content="Update your personal details and referral code." />
+                <meta property="og:image" content="/assets/images/banner-02.png" />
+                <meta name="twitter:title" content="My Account | CopyTradeHome" />
+                <meta name="twitter:description" content="Update your personal details and referral code." />
+                <meta name="twitter:image" content="/assets/images/banner-02.png" />
+            </Helmet>
             {/* Start::page-header */}
             <div className="page-header-breadcrumb mb-3">
                 <div className="d-flex align-center justify-content-between flex-wrap">

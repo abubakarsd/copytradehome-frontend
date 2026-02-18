@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext';
+import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,8 +20,10 @@ import './assets/css/home.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
-      <App />
-      <ToastContainer />
+      <HelmetProvider>
+        <App />
+        <ToastContainer />
+      </HelmetProvider>
     </AuthProvider>
   </React.StrictMode>,
 );
