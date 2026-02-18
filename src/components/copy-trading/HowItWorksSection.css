@@ -1,0 +1,79 @@
+/* Custom Process Connector Styles */
+
+.process-connector {
+    position: relative;
+}
+
+/* Dotted line connecting steps */
+/* Dotted line connecting steps */
+@media (min-width: 992px) {
+    .process-connector::after {
+        content: '';
+        position: absolute;
+        /* Align with icon center: 
+           Column padding (~0.75rem) + Card padding (2rem) + Half icon (1.75rem) ≈ 4.5rem
+        */
+        top: 3.8rem;
+        /* Adjusted for vertical center */
+        left: 4.5rem;
+        width: 100%;
+        border-top: 2px dashed #d1c4e9;
+        z-index: 3;
+        /* Above card background */
+    }
+}
+
+/* Card Improvements */
+.custom-card {
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.custom-card.card-body {
+    padding: 2rem;
+    /* More spacious */
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    border-radius: 1rem;
+}
+
+/* Process Icons */
+.process-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3efff;
+    /* Light purple opaque to cover line */
+    border-radius: 12px;
+    color: #845adf;
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.process-icon i {
+    line-height: 1;
+}
+
+/* Badges */
+.step-badge {
+    background-color: #d96d20 !important;
+    /* Orange */
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5em 1em;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(217, 109, 32, 0.3);
+}

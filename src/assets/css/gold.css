@@ -1,0 +1,145 @@
+/* Gold Page Specific Styles */
+
+/* Precious Metals Illustration */
+.precious-metals-illustration {
+    position: relative;
+    padding: 40px;
+}
+
+.precious-metals-illustration svg {
+    width: 100%;
+    height: auto;
+    animation: float-gold 6s ease-in-out infinite;
+}
+
+@keyframes float-gold {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Stats Section */
+.crypto-stats {
+    padding: 60px 0;
+    background: var(--body-bg);
+}
+
+.crypto-stats .stat-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.crypto-stats .stat-box:hover {
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 15px 35px rgba(255, 215, 0, 0.1);
+}
+
+.crypto-stats .stat-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 16px;
+    margin: 0 auto 20px;
+}
+
+.crypto-stats .stat-icon.gold {
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.crypto-stats .stat-icon.green {
+    background: rgba(88, 189, 125, 0.1);
+}
+
+.crypto-stats .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 8px;
+}
+
+.crypto-stats .stat-label {
+    color: var(--text-color);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Precious Metals Cards */
+.precious-metals-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.precious-metal-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.precious-metal-card:hover {
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+}
+
+.metal-card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.metal-card-info h6 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--heading-color);
+}
+
+.metal-card-info p {
+    font-size: 14px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Service Card Fixes for Gold */
+.service-icon.gold {
+    background: rgba(255, 215, 0, 0.1);
+    color: #ffd700;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .precious-metals-illustration {
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    .precious-metals-cards {
+        grid-template-columns: 1fr;
+    }
+}

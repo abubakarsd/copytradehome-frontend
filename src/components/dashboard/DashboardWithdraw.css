@@ -1,0 +1,90 @@
+/* DashboardWithdraw.css */
+
+.withdraw-info-list li {
+    padding-bottom: 0 !important;
+}
+
+/* Custom Alert Styling */
+.alert-info-light {
+    background-color: rgba(69, 204, 255, 0.1);
+    border: 1px solid rgba(69, 204, 255, 0.2);
+    color: #0d6efd;
+    font-size: 0.85rem;
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.alert-info-light i {
+    color: #45ccff;
+}
+
+/* Avatar sizing for the balance cards */
+.avatar.avatar-sm {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Form Styles */
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.text-success {
+    color: #00d27a !important;
+}
+
+/* Wallet Address Box */
+.wallet-address-box {
+    border: 1px solid #e9edf2;
+    background-color: #f9fbfd;
+}
+
+/* Copy button hover */
+.btn-outline-light.text-primary:hover {
+    background-color: #e9edf2;
+    color: var(--primary-color);
+}
+
+/* Dark mode overrides */
+body.is_dark .wallet-address-box {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.is_dark .btn-outline-light.text-primary {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+body.is_dark .custom-card {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+body.is_dark .form-control,
+body.is_dark .form-select {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Right column info icons */
+.withdraw-info-list .avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.withdraw-info-list i {
+    font-size: 20px;
+}

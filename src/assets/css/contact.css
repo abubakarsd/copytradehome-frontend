@@ -1,0 +1,180 @@
+/* Page-specific Styles for Contact Page */
+
+/* Banner Small */
+.banner-small {
+    padding: 80px 0 60px;
+}
+
+/* Contact Info Section */
+.contact-info-section {
+    padding: 60px 0;
+    background: var(--body-bg);
+}
+
+.contact-info-section .stat-box {
+    height: 100%;
+    text-align: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.contact-info-section .stat-box:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 35px rgba(55, 114, 255, 0.15);
+}
+
+.contact-info-box .stat-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(55, 114, 255, 0.1);
+    border-radius: 16px;
+    margin: 0 auto 20px;
+}
+
+.contact-info-box .stat-icon.green {
+    background: rgba(88, 189, 125, 0.1);
+}
+
+.contact-info-box .info-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 12px;
+}
+
+.contact-info-box .info-text {
+    font-size: 14px;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.contact-info-box .info-text a {
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.contact-info-box .info-text a:hover {
+    color: var(--primary-color);
+}
+
+/* Contact Form Section */
+.contact-form-section {
+    padding: 60px 0;
+    background: var(--card-bg);
+}
+
+.contact-form-card {
+    background: var(--body-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 50px;
+}
+
+.contact-form-card .form-control {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--heading-color);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Dark mode overrides are handled by forms-theme-fix.css, but verifying specifics */
+[data-theme-mode="dark"] .contact-form-card .form-control {
+    background-color: var(--card-bg) !important;
+}
+
+
+.contact-form-card .form-control:focus {
+    background: var(--card-bg);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(55, 114, 255, 0.1);
+    outline: none;
+}
+
+.contact-form-card .form-control::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
+}
+
+.contact-form-card textarea.form-control {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* Map Section */
+.map-section {
+    padding: 60px 0;
+    background: var(--body-bg);
+}
+
+.map-container {
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    height: 450px;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .contact-form-card {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .banner-small {
+        padding: 60px 0 40px;
+    }
+
+    .contact-form-card {
+        padding: 30px 20px;
+    }
+
+    .map-container {
+        height: 300px;
+    }
+}
+
+/* Form Success/Error Messages */
+#msgSubmit {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: none;
+}
+
+#msgSubmit.success {
+    display: block;
+    color: #58BD7D;
+    background: rgba(88, 189, 125, 0.1);
+    border: 1px solid rgba(88, 189, 125, 0.3);
+}
+
+#msgSubmit.error {
+    display: block;
+    color: #ff4757;
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.btn-action:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

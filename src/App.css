@@ -1,0 +1,129 @@
+/* App specific styles */
+
+/* Breadcrumb separator override */
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "»";
+    font-family: inherit;
+}
+
+/* Light Mode Border Override for Assets Page */
+[data-theme-mode="light"] .custom-card.border {
+    border: 1px solid #e9edf6 !important;
+}
+
+/* --- Merged from forms-theme-fix.css --- */
+/* Global Form Control Overrides for Theme Compatibility */
+
+/* Light Mode Defaults */
+[data-theme-mode="light"] .form-control {
+    background-color: #ffffff;
+    color: #011a42;
+    border-color: #e2e8ee;
+}
+
+/* Dark Mode Overrides for Inputs */
+[data-theme-mode="dark"] .form-control {
+    background-color: rgb(38, 38, 52) !important;
+    /* Matches auth.css var */
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme-mode="dark"] .form-control:focus {
+    background-color: rgb(38, 38, 52) !important;
+    color: #ffffff !important;
+    border-color: var(--primary-color) !important;
+}
+
+[data-theme-mode="dark"] .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme-mode="dark"] .input-group-text {
+    background-color: rgb(38, 38, 52);
+    color: rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* AUTH PAGE SPECIFIC OVERRIDES */
+
+/* Ensure the main authentication container has the correct dark background */
+[data-theme-mode="dark"] .authentication-cover-main,
+[data-theme-mode="dark"] .authentication {
+    background-color: #141416 !important;
+    /* Deep dark background */
+}
+
+/* Fix Card Background in Auth Pages */
+[data-theme-mode="dark"] .custom-card,
+[data-theme-mode="dark"] .card {
+    background-color: transparent !important;
+    background: transparent !important;
+    /* Safety net */
+    box-shadow: none !important;
+    border: none !important;
+}
+
+[data-theme-mode="dark"] .custom-card .card-body,
+[data-theme-mode="dark"] .card .card-body {
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #FCFCFD !important;
+}
+
+/* Fix Headings and Text in Auth Card */
+[data-theme-mode="dark"] .authentication .card-body h4,
+[data-theme-mode="dark"] .authentication .card-body h5,
+[data-theme-mode="dark"] .authentication .card-body h6,
+[data-theme-mode="dark"] .authentication .card-body label {
+    color: #FCFCFD !important;
+}
+
+[data-theme-mode="dark"] .authentication p.text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+[data-theme-mode="dark"] .authentication .form-label {
+    color: #FCFCFD !important;
+}
+
+/* Fix Right Side (Welcome Section) */
+[data-theme-mode="dark"] .authentication-cover {
+    background-color: #1e1e2d;
+    /* Slightly different dark for contrast if needed, or keeping transparent */
+    position: relative;
+}
+
+/* Ensure the background image blends correctly */
+[data-theme-mode="dark"] .authentication-cover-background {
+    opacity: 0.2 !important;
+    background-color: #000;
+    /* Darken the image blend */
+}
+
+[data-theme-mode="dark"] .authentication-cover-content h3 {
+    color: #ffffff !important;
+}
+
+[data-theme-mode="dark"] .authentication-cover-content p {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Checkbox fix */
+[data-theme-mode="dark"] .form-check-input {
+    background-color: rgb(38, 38, 52);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme-mode="dark"] .form-check-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Eye Icon Visibility Fix */
+[data-theme-mode="dark"] .show-password-button i {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+[data-theme-mode="dark"] .show-password-button:hover i {
+    color: #ffffff !important;
+}

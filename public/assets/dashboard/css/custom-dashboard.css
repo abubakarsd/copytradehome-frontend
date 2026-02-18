@@ -1,0 +1,221 @@
+:root {
+  font-size: 16px;
+  /* down from browser default 16px for a denser layout */
+}
+
+body {
+  font-size: 1rem;
+}
+
+.side-menu__item,
+.side-menu__label,
+.header-link,
+.btn,
+.form-control,
+.form-select,
+.table,
+.toast-body {
+  font-size: 0.9rem;
+}
+
+/* Form Label Visibility Fix for Dark Theme */
+label,
+.form-label {
+  color: rgb(190, 190, 196) !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+
+.form-group label,
+.form-group .form-label {
+  color: rgb(161, 161, 164) !important;
+  font-weight: 500;
+}
+
+/* Modal labels */
+.modal-body label,
+.modal-body .form-label {
+  color: rgb(154, 154, 158) !important;
+}
+
+/* Card labels */
+.card label,
+.card .form-label {
+  color: rgb(154, 154, 158) !important;
+}
+
+/* Text muted labels - slightly lighter but still visible */
+label.text-muted,
+.form-label.text-muted {
+  color: #B1B5C4 !important;
+}
+
+/* Small labels */
+label.fs-12,
+.form-label.fs-12 {
+  color: #B1B5C4 !important;
+}
+
+/* Form control styling for consistency */
+.form-control,
+.form-select,
+textarea.form-control {
+  /* background-color: #141416 !important; */
+  /* border: 1px solid #353945 !important; */
+  color: rgb(154, 154, 158) !important;
+  font-size: 0.875rem;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+  /* background-color: #23262F !important; */
+  border-color: #d96d20 !important;
+  color: rgb(154, 154, 158) !important;
+  box-shadow: 0 0 0 3px rgba(217, 109, 32, 0.1);
+}
+
+.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: #777E90 !important;
+  opacity: 1;
+}
+
+/* Disabled form controls */
+.form-control:disabled,
+.form-select:disabled {
+  /* background-color: #23262F !important; */
+  opacity: 0.6;
+}
+
+/* Select options styling */
+.form-select option {
+  background-color: #23262F;
+  color: rgb(154, 154, 158) !important;
+}
+
+/* Input group text */
+.input-group-text {
+  background-color: #23262F;
+  border-color: #353945;
+  color: #B1B5C4;
+}
+
+/* File input styling */
+input[type="file"].form-control {
+  padding: 0.5rem;
+}
+
+/* Required field indicator */
+label.required::after,
+.form-label.required::after {
+  content: " *";
+  color: #d96d20;
+}
+
+/* Help text below labels */
+.form-text,
+small.text-muted {
+  color: #777E90 !important;
+}
+
+/* Card headers with titles */
+.card-header .card-title {
+  color: rgb(154, 154, 158) !important;
+  font-weight: 600;
+}
+
+/* Main content labels */
+.main-content-label {
+  color: rgb(154, 154, 158) !important;
+  font-weight: 600;
+}
+
+/* Modal titles */
+/* .modal-title {
+        color:rgb(154, 154, 158) !important;
+      } */
+
+/* Ensure proper spacing */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Layout Fixes */
+.app-content {
+  margin-left: 240px;
+  /* Default open width */
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 991.98px) {
+  .app-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* Adjust when sidebar is collapsed */
+[data-toggled="icon-click-closed"] .app-content,
+[data-toggled="icon-hover-closed"] .app-content,
+[data-toggled="menu-click-closed"] .app-content,
+[data-toggled="menu-hover-closed"] .app-content {
+  margin-left: 80px;
+}
+
+/* Closed state */
+[data-toggled="close"] .app-content {
+  margin-left: 0;
+}
+
+
+
+/* TradingView Copyright Styles */
+.tradingview-widget-copyright {
+  font-size: 13px !important;
+  line-height: 32px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important;
+  color: #B2B5BE !important;
+}
+
+.tradingview-widget-copyright .blue-text {
+  color: #2962FF !important;
+}
+
+.tradingview-widget-copyright a {
+  text-decoration: none !important;
+  color: #B2B5BE !important;
+}
+
+.tradingview-widget-copyright a:visited {
+  color: #B2B5BE !important;
+}
+
+.tradingview-widget-copyright a:hover .blue-text {
+  color: #1E53E5 !important;
+}
+
+.tradingview-widget-copyright a:active .blue-text {
+  color: #1848CC !important;
+}
+
+.tradingview-widget-copyright a:visited .blue-text {
+  color: #2962FF !important;
+}
+
+/* User Requested Layout Adjustments */
+.main-body-container {
+  padding-top: 1rem !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  width: 98% !important;
+  /* Reduce width slightly */
+  margin: 0 auto !important;
+}

@@ -1,0 +1,236 @@
+/* Crypto Page Specific Styles */
+
+/* Crypto Banner Illustration */
+.crypto-illustration {
+    position: relative;
+    padding: 40px;
+}
+
+.crypto-illustration svg {
+    width: 100%;
+    height: auto;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Crypto Tags */
+.crypto-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.crypto-tag {
+    padding: 8px 16px;
+    background: rgba(55, 114, 255, 0.1);
+    border: 1px solid rgba(55, 114, 255, 0.2);
+    border-radius: 20px;
+    color: #d96d20;
+    /* Primary color */
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Crypto Stats */
+.crypto-stats {
+    padding: 60px 0;
+    background: var(--body-bg);
+}
+
+.crypto-stats .stat-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.crypto-stats .stat-box:hover {
+    transform: translateY(-5px);
+    border-color: #d96d20;
+    box-shadow: 0 15px 35px rgba(55, 114, 255, 0.15);
+}
+
+.crypto-stats .stat-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(55, 114, 255, 0.1);
+    border-radius: 16px;
+    margin: 0 auto 20px;
+}
+
+.crypto-stats .stat-icon.green {
+    background: rgba(88, 189, 125, 0.1);
+}
+
+.crypto-stats .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 8px;
+}
+
+.crypto-stats .stat-label {
+    color: var(--text-color);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Crypto Cards */
+.crypto-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.crypto-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.crypto-card:hover {
+    transform: translateY(-5px);
+    border-color: #d96d20;
+    box-shadow: 0 10px 30px rgba(55, 114, 255, 0.15);
+}
+
+.crypto-card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.crypto-card-info h6 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--heading-color);
+}
+
+.crypto-card-info p {
+    font-size: 14px;
+    color: var(--text-color);
+    margin: 0;
+}
+
+/* Service Cards */
+.service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: #d96d20;
+    box-shadow: 0 20px 40px rgba(55, 114, 255, 0.15);
+}
+
+.service-card .service-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(55, 114, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #d96d20;
+}
+
+.service-card .service-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.service-card .service-icon.green {
+    background: rgba(88, 189, 125, 0.1);
+    color: #58BD7D;
+}
+
+.service-card .service-icon.blue {
+    background: rgba(55, 114, 255, 0.1);
+    color: #d96d20;
+}
+
+.service-card .service-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--heading-color);
+}
+
+.service-card .service-text {
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* TradingView Widget */
+.tradingview-widget-container {
+    background: transparent;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .crypto-illustration {
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    .crypto-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .crypto-stats .stat-value {
+        font-size: 28px;
+    }
+
+    .crypto-card {
+        padding: 16px;
+    }
+
+    .crypto-card-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .crypto-card-icon svg {
+        width: 32px;
+        height: 32px;
+    }
+}

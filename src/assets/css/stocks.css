@@ -1,0 +1,122 @@
+/* Stocks Page Specific Styles */
+
+/* Stats Section */
+.crypto-stats {
+    padding: 60px 0;
+    background: var(--body-bg);
+}
+
+.crypto-stats .stat-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.crypto-stats .stat-box:hover {
+    transform: translateY(-5px);
+    border-color: #d96d20;
+    box-shadow: 0 15px 35px rgba(55, 114, 255, 0.15);
+}
+
+.crypto-stats .stat-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(55, 114, 255, 0.1);
+    border-radius: 16px;
+    margin: 0 auto 20px;
+}
+
+.crypto-stats .stat-icon.green {
+    background: rgba(88, 189, 125, 0.1);
+}
+
+.crypto-stats .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 8px;
+}
+
+.crypto-stats .stat-label {
+    color: var(--text-color);
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Service Cards */
+.service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: #d96d20;
+    box-shadow: 0 20px 40px rgba(55, 114, 255, 0.15);
+}
+
+.service-card .service-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(55, 114, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #d96d20;
+}
+
+.service-card .service-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.service-card .service-icon.green {
+    background: rgba(88, 189, 125, 0.1);
+    color: #58BD7D;
+}
+
+.service-card .service-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--heading-color);
+}
+
+.service-card .service-text {
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* TradingView Widget Styles */
+.tradingview-widget-container {
+    background: transparent;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .crypto-stats .stat-value {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 767px) {
+    .crypto-stats .stat-value {
+        font-size: 24px;
+    }
+}

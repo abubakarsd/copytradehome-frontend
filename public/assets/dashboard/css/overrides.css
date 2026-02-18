@@ -1,0 +1,5 @@
+/* Standardize Breadcrumb Separator */
+.breadcrumb-item+.breadcrumb-item::before {
+    content: "»" !important;
+    font-family: inherit !important;
+}
