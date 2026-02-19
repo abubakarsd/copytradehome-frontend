@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const AdminHeader = () => {
-    const { logout, user } = useAuth();
+    const { logout } = useAdminAuth();
     return (
         <>
             <header className="app-header sticky sticky-pin" id="header">
