@@ -129,9 +129,9 @@ const AdminWallets = () => {
                                                 <td>
                                                     <span className="avatar avatar-sm bg-light">
                                                         <img
-                                                            src={wallet.icon && /^\d+-/.test(wallet.icon) ? `${API_URL}/images/${wallet.icon}` : `/assets/dashboard/images/${wallet.icon}`}
+                                                            src={wallet.icon && /\d{10,}/.test(wallet.icon) ? `${API_URL}/images/${wallet.icon}` : `/assets/dashboard/images/${wallet.icon}`}
                                                             alt={wallet.name}
-                                                            // onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
+                                                        // onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                         />
                                                     </span>
                                                 </td>
