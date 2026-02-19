@@ -5,6 +5,9 @@ import DepositDetailsModal from './DepositDetailsModal';
 import api from '../../utils/axios';
 import { toast } from 'react-toastify';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+
 const DashboardDeposit = () => {
     const [amount, setAmount] = useState('');
     const [selectedWallet, setSelectedWallet] = useState('USDCTrc20_');
@@ -176,7 +179,7 @@ const DashboardDeposit = () => {
                                         <div className="lh-1">
                                             <span className="avatar avatar-rounded">
                                                 <img
-                                                    src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : `/assets/dashboard/images/${wallet.img}`}
+                                                    src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : (wallet.img?.includes('-') ? `${API_URL}/images/${wallet.img}` : `/assets/dashboard/images/${wallet.img}`)}
                                                     alt={wallet.name}
                                                     onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                 />
@@ -615,7 +618,7 @@ const DashboardDeposit = () => {
                                     <div className="d-flex align-items-center p-3 mb-2 rounded bg-light" key={wallet.id}>
                                         <div className="avatar-sm bg-white rounded-circle d-flex align-items-center justify-content-center me-3 border" style={{ width: '40px', height: '40px' }}>
                                             <img
-                                                src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : `/assets/dashboard/images/${wallet.img}`}
+                                                src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : (wallet.img?.includes('-') ? `http://localhost:5000/api/images/${wallet.img}` : `/assets/dashboard/images/${wallet.img}`)}
                                                 alt={wallet.name}
                                                 style={{ width: '40px', height: '40px' }}
                                                 onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}

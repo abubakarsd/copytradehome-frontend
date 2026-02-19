@@ -3,6 +3,9 @@ import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+
 const AdminWallets = () => {
     // Initial Mock Data (matching user side + address)
     const [wallets, setWallets] = useState([]);
@@ -126,7 +129,7 @@ const AdminWallets = () => {
                                                 <td>
                                                     <span className="avatar avatar-sm bg-light">
                                                         <img
-                                                            src={wallet.icon && wallet.icon.includes('-') ? `http://localhost:5000/api/images/${wallet.icon}` : `/assets/dashboard/images/${wallet.icon}`}
+                                                            src={wallet.icon && wallet.icon.includes('-') ? `${API_URL}/images/${wallet.icon}` : `/assets/dashboard/images/${wallet.icon}`}
                                                             alt={wallet.name}
                                                             onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                         />
