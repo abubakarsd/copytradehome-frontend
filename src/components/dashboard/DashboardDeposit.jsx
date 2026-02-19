@@ -179,7 +179,7 @@ const DashboardDeposit = () => {
                                         <div className="lh-1">
                                             <span className="avatar avatar-rounded">
                                                 <img
-                                                    src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : (wallet.img?.includes('-') ? `${API_URL}/images/${wallet.img}` : `/assets/dashboard/images/${wallet.img}`)}
+                                                    src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : (wallet.img && /^\d+-/.test(wallet.img) ? `${API_URL}/images/${wallet.img}` : `/assets/dashboard/images/${wallet.img}`)}
                                                     alt={wallet.name}
                                                     onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                 />
