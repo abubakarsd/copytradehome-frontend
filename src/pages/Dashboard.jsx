@@ -105,6 +105,9 @@ const Dashboard = () => {
 
                 setIsLoading(false);
 
+                // Small delay to ensure React DOM is really mounted and painted
+                await new Promise(resolve => setTimeout(resolve, 500));
+
                 // Custom scripts (might rely on above)
                 await loadScript('/assets/dashboard/js/custom.js');
                 await loadScript('/assets/dashboard/js/custom-switcher.min.js');

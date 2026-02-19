@@ -125,7 +125,7 @@ const DashboardCopyTrading = () => {
                     <div className="d-flex align-center justify-content-between flex-wrap">
                         <h1 className="page-title fw-medium fs-18 mb-0">Copy Expert</h1>
                         <ol className="breadcrumb mb-0">
-                            <li className="breadcrumb-item"><a href="javascript:void(0);">Dashboards</a></li>
+                            <li className="breadcrumb-item"><a href="#" onClick={(e) => e.preventDefault()}>Dashboards</a></li>
                             <li className="breadcrumb-item active" aria-current="page">Copy Expert</li>
                         </ol>
                     </div>

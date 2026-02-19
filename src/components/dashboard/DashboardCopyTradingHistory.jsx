@@ -19,7 +19,7 @@ const DashboardCopyTradingHistory = () => {
                     <div className="d-flex align-center justify-content-between flex-wrap">
                         <h1 className="page-title fw-medium fs-18 mb-0">Copy Trading History</h1>
                         <ol className="breadcrumb mb-0">
-                            <li className="breadcrumb-item"><a href="javascript:void(0);">Dashboards</a></li>
+                            <li className="breadcrumb-item"><a href="#" onClick={(e) => e.preventDefault()}>Dashboards</a></li>
                             <li className="breadcrumb-item"><Link to="/dashboard/copy-trading">Copy Trading</Link></li>
                             <li className="breadcrumb-item active" aria-current="page">History</li>
                         </ol>
@@ -105,13 +105,13 @@ const DashboardCopyTradingHistory = () => {
                                         <nav aria-label="Page navigation" className="pagination-style-4">
                                             <ul className="pagination mb-0">
                                                 <li className="page-item disabled">
-                                                    <a className="page-link" href="javascript:void(0);">
+                                                    <a className="page-link" href="#" onClick={(e) => e.preventDefault()}>
                                                         Prev
                                                     </a>
                                                 </li>
-                                                <li className="page-item active"><a className="page-link" href="javascript:void(0);">1</a></li>
+                                                <li className="page-item active"><a className="page-link" href="#" onClick={(e) => e.preventDefault()}>1</a></li>
                                                 <li className="page-item">
-                                                    <a className="page-link text-primary" href="javascript:void(0);">
+                                                    <a className="page-link text-primary" href="#" onClick={(e) => e.preventDefault()}>
                                                         Next
                                                     </a>
                                                 </li>

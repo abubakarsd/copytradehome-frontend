@@ -221,7 +221,7 @@ const DashboardSidebar = () => {
 
                             {/* Affiliates */}
                             <li className={`slide has-sub ${isReferralsActive ? 'open' : ''}`}>
-                                <a href="javascript:void(0);" className={`side-menu__item ${isReferralsActive ? 'active' : ''}`} data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Affiliates">
+                                <a href="#" onClick={(e) => e.preventDefault()} className={`side-menu__item ${isReferralsActive ? 'active' : ''}`} data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Affiliates">
                                     <i className="bx bx-user-voice side-menu__icon"></i>
                                     <span className="side-menu__label">Affiliates</span>
                                     <i className="ri-arrow-right-s-line side-menu__angle"></i>
