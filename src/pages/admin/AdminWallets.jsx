@@ -50,15 +50,8 @@ const AdminWallets = () => {
         if (e.target.type === 'file') {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    if (e.target.name === 'qrCodeFile') {
-                        setFormData({ ...formData, qrCode: reader.result });
-                    } else if (e.target.name === 'iconFile') {
-                        setFormData({ ...formData, icon: reader.result });
-                    }
-                };
-                reader.readAsDataURL(file);
+                // Store the file object directly for upload
+                setFormData({ ...formData, [e.target.name]: file });
             }
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -68,10 +61,24 @@ const AdminWallets = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/admin/wallets', formData);
+            const data = new FormData();
+            data.append('name', formData.name);
+            data.append('currency', formData.currency);
+            data.append('chain', formData.chain);
+            data.append('address', formData.address);
+            if (formData.iconFile) {
+                data.append('icon', formData.iconFile);
+            }
+            if (formData.qrCodeFile) {
+                data.append('qrCode', formData.qrCodeFile);
+            }
+
+            // Send FormData (Axios automatically sets Content-Type to multipart/form-data)
+            await api.post('/admin/wallets', data);
+
             toast.success('Wallet added successfully');
             setShowModal(false);
-            setFormData({ name: '', currency: '', chain: '', address: '', icon: 'tether-usdt-logo.svg', qrCode: '' });
+            setFormData({ name: '', currency: '', chain: '', address: '', iconFile: null, qrCodeFile: null });
             fetchWallets();
         } catch (error) {
             toast.error(error.response?.data?.error || 'Failed to add wallet');
@@ -119,7 +126,7 @@ const AdminWallets = () => {
                                                 <td>
                                                     <span className="avatar avatar-sm bg-light">
                                                         <img
-                                                            src={wallet.icon?.startsWith('data:image') || wallet.icon?.startsWith('http') ? wallet.icon : `/assets/dashboard/images/${wallet.icon}`}
+                                                            src={wallet.icon && wallet.icon.includes('-') ? `http://localhost:5000/api/images/${wallet.icon}` : `/assets/dashboard/images/${wallet.icon}`}
                                                             alt={wallet.name}
                                                             onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                         />
