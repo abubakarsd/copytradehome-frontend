@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { useEffect } from 'react';
-// import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import AuthLayout from './components/AuthLayout';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -88,62 +88,78 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AdminAuthProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* <Route path="/faq" element={<Faq />} /> */}
-            {/* <Route path="/terms" element={<Terms />} /> */}
-            {/* <Route path="/privacy" element={<Privacy />} /> */}
-            {/* <Route path="/trading-rules" element={<TradingRules />} /> */}
-            {/* <Route path="/disclosure" element={<Disclosure />} /> */}
+      <AuthProvider>
+        <AdminAuthProvider>
+          <Routes>
+            {/* Public Routes */}
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* <Route path="/faq" element={<Faq />} /> */}
+              {/* <Route path="/terms" element={<Terms />} /> */}
+              {/* <Route path="/privacy" element={<Privacy />} /> */}
+              {/* <Route path="/trading-rules" element={<TradingRules />} /> */}
+              {/* <Route path="/disclosure" element={<Disclosure />} /> */}
 
-            {/* Auth Routes */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
-          </Route>
+              <Route path="/copy-trading" element={<CopyTrading />} />
+              <Route path="/crypto" element={<Crypto />} />
+              <Route path="/gold" element={<Gold />} />
+              <Route path="/stocks" element={<Stocks />} />
+              <Route path="/green-energy" element={<GreenEnergy />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
 
-          {/* Protected User Routes */}
-          <Route path="/dashboard" element={<Outlet />}>
-            <Route index element={<Dashboard />} />
-            {/* <Route path="market" element={<DashboardMarket />} /> */}
-            <Route path="crypto" element={<DashboardCrypto />} />
-            <Route path="stocks" element={<DashboardStocks />} />
-            {/* <Route path="forex" element={<DashboardForex />} /> */}
-            {/* <Route path="invest" element={<DashboardInvest />} /> */}
-            {/* <Route path="invest/history" element={<InvestHistory />} /> */}
-            {/* <Route path="trade-history" element={<TradeHistory />} /> */}
-            {/* <Route path="withdrawals" element={<Withdrawals />} /> */}
-            <Route path="deposit" element={<DashboardDeposit />} />
-            <Route path="copy-experts" element={<CopyExpertPage />} />
-            <Route path="copy-experts/:id" element={<CopyExpertDetailsPage />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="profile/notifications" element={<ProfileNotifications />} />
-            <Route path="profile/wallets" element={<ProfileWallets />} />
-          </Route>
+              {/* Auth Routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
+            </Route>
 
-          {/* Admin Auth Route */}
-          <Route path="/master-key/login" element={<AdminLogin />} />
+            {/* Protected User Routes */}
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route index element={<DashboardPortfolio />} />
+              <Route path="crypto" element={<DashboardCrypto />} />
+              <Route path="stocks" element={<DashboardStocks />} />
+              <Route path="crypto-trade" element={<DashboardCryptoTrade />} />
+              <Route path="deposit" element={<DashboardDeposit />} />
+              <Route path="withdraw" element={<DashboardWithdraw />} />
+              <Route path="withdraw/history" element={<DashboardWithdrawHistory />} />
+              <Route path="copy-trading-dashboard" element={<DashboardCopyTrading />} />
+              <Route path="copy-trading" element={<DashboardCopyTrading />} />
+              <Route path="copy-trading/history" element={<DashboardCopyTradingHistory />} />
+              <Route path="assets" element={<Assets />} />
+              <Route path="signals" element={<Signals />} />
+              <Route path="live-trading" element={<LiveTrading />} />
+              <Route path="connect-wallet" element={<ConnectWallet />} />
+              <Route path="referral" element={<ReferralLink />} />
+              <Route path="referral-tree" element={<ReferralTree />} />
+              <Route path="copy-experts" element={<CopyExpertPage />} />
+              <Route path="copy-experts/:id" element={<CopyExpertDetailsPage />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="profile/password" element={<ProfilePassword />} />
+              <Route path="profile/notifications" element={<ProfileNotifications />} />
+              <Route path="profile/wallets" element={<ProfileWallets />} />
+            </Route>
 
-          {/* Admin Routes */}
-          <Route path="/master-key" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="wallets" element={<AdminWallets />} />
-            <Route path="trade-history" element={<AdminTradeHistory />} />
-            <Route path="users" element={<AdminUsers />} />
-            <Route path="deposits" element={<AdminDeposits />} />
-            <Route path="withdrawals" element={<AdminWithdrawals />} />
-            <Route path="copy-trading" element={<AdminCopyTrading />} />
-            <Route path="signals" element={<AdminSignals />} />
-          </Route>
-        </Routes>
-      </AdminAuthProvider>
+            {/* Admin Auth Route */}
+            <Route path="/master-key/login" element={<AdminLogin />} />
+
+            {/* Admin Routes */}
+            <Route path="/master-key" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="wallets" element={<AdminWallets />} />
+              <Route path="trade-history" element={<AdminTradeHistory />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="deposits" element={<AdminDeposits />} />
+              <Route path="withdrawals" element={<AdminWithdrawals />} />
+              <Route path="copy-trading" element={<AdminCopyTrading />} />
+              <Route path="signals" element={<AdminSignals />} />
+            </Route>
+          </Routes>
+        </AdminAuthProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
