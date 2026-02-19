@@ -1,57 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminWallets = () => {
     // Initial Mock Data (matching user side + address)
-    const [wallets, setWallets] = useState([
-        { id: 1, name: 'USDC (TRC20)', code: 'USDC', chain: 'TRC20', address: 'TDUCHcHjnX7ZGjMAaXD66b8q8bq1BjjASj', img: '2026-11876038991767488048.jpg', qrCode: 'qr-placeholder.png' },
-        { id: 2, name: 'XRP', code: 'XRP', chain: 'Ripple', address: 'rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh', img: '2026-5499334291767488183.jpg', qrCode: 'qr-placeholder.png' },
-        { id: 3, name: 'USDT TRC20', code: 'USDT', chain: 'TRC20', address: 'TDUCHcHjnX7ZGjMAaXD66b8q8bq1BjjASj', img: '2026-16096937901767488278.jpg', qrCode: 'qr-placeholder.png' },
-        { id: 4, name: 'ETHEREUM', code: 'ETH', chain: 'ERC20', address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', img: '2026-4889608771767487892.jpg', qrCode: 'qr-placeholder.png' },
-        { id: 5, name: 'BITCOIN', code: 'BTC', chain: 'Bitcoin', address: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', img: '2026-273381261767488466.jpg', qrCode: 'qr-placeholder.png' },
-    ]);
-
+    const [wallets, setWallets] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         code: '',
         chain: '',
         address: '',
-        img: '',
-        qrCodeFile: null
+        img: 'default-crypto.png',
+        qrCode: '' // Base64 or URL
     });
 
-    const handleDelete = (id) => {
+    const fetchWallets = async () => {
+        try {
+            const { data } = await api.get('/admin/wallets');
+            if (data.success) {
+                setWallets(data.data);
+            }
+        } catch (error) {
+            toast.error('Failed to load wallets');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchWallets();
+    }, []);
+
+    const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this wallet?')) {
-            setWallets(wallets.filter(w => w.id !== id));
-            toast.success('Wallet deleted successfully');
+            try {
+                await api.delete(`/admin/wallets/${id}`);
+                toast.success('Wallet deleted successfully');
+                fetchWallets();
+            } catch (error) {
+                toast.error('Failed to delete wallet');
+            }
         }
     };
 
     const handleChange = (e) => {
         if (e.target.type === 'file') {
-            setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setFormData({ ...formData, qrCode: reader.result });
+                };
+                reader.readAsDataURL(file);
+            }
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const newWallet = {
-            id: Date.now(),
-            name: formData.name,
-            code: formData.code,
-            chain: formData.chain,
-            address: formData.address,
-            img: 'default-crypto.png', // Fallback
-            qrCode: formData.qrCodeFile ? URL.createObjectURL(formData.qrCodeFile) : 'qr-placeholder.png'
-        };
-        setWallets([...wallets, newWallet]);
-        setShowModal(false);
-        setFormData({ name: '', code: '', chain: '', address: '', img: '', qrCodeFile: null });
-        toast.success('Wallet added successfully');
+        try {
+            await api.post('/admin/wallets', formData);
+            toast.success('Wallet added successfully');
+            setShowModal(false);
+            setFormData({ name: '', code: '', chain: '', address: '', img: 'default-crypto.png', qrCode: '' });
+            fetchWallets();
+        } catch (error) {
+            toast.error('Failed to add wallet');
+        }
     };
 
     return (
@@ -91,7 +111,7 @@ const AdminWallets = () => {
                                     </thead>
                                     <tbody>
                                         {wallets.map((wallet) => (
-                                            <tr key={wallet.id}>
+                                            <tr key={wallet._id}>
                                                 <td>
                                                     <span className="avatar avatar-sm bg-light">
                                                         <img
@@ -120,7 +140,7 @@ const AdminWallets = () => {
                                                 <td>
                                                     <div className="hstack gap-2 fs-15">
                                                         <button className="btn btn-icon btn-sm btn-info-light"><i className="ri-edit-line"></i></button>
-                                                        <button className="btn btn-icon btn-sm btn-danger-light" onClick={() => handleDelete(wallet.id)}><i className="ri-delete-bin-line"></i></button>
+                                                        <button className="btn btn-icon btn-sm btn-danger-light" onClick={() => handleDelete(wallet._id)}><i className="ri-delete-bin-line"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

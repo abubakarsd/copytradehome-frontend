@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminSignals = () => {
     // Mock Data
-    const [signals, setSignals] = useState([
-        { id: 1, pair: 'BTC/USD', type: 'Buy', entry: '$45,000', sl: '$44,500', tp: '$48,000', status: 'Active', posted: '2 hrs ago' },
-        { id: 2, pair: 'ETH/USD', type: 'Sell', entry: '$3,200', sl: '$3,300', tp: '$2,900', status: 'Expired', posted: '1 day ago' },
-        { id: 3, pair: 'XRP/USD', type: 'Buy', entry: '$0.55', sl: '$0.50', tp: '$0.70', status: 'Active', posted: '5 hrs ago' },
-    ]);
+    const [signals, setSignals] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleDelete = (id) => {
+    const fetchSignals = async () => {
+        try {
+            const { data } = await api.get('/admin/signals');
+            if (data.success) {
+                setSignals(data.data);
+            }
+        } catch (error) {
+            toast.error('Failed to load signals');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchSignals();
+    }, []);
+
+    const handleDelete = async (id) => {
         if (window.confirm('Delete this signal?')) {
-            setSignals(signals.filter(s => s.id !== id));
-            toast.success('Signal deleted');
+            try {
+                await api.delete(`/admin/signals/${id}`);
+                toast.success('Signal deleted');
+                fetchSignals();
+            } catch (error) {
+                toast.error('Failed to delete signal');
+            }
         }
     };
 
@@ -37,7 +57,7 @@ const AdminSignals = () => {
 
             <div className="row">
                 {signals.map((signal) => (
-                    <div className="col-xl-4 col-lg-6 col-md-6" key={signal.id}>
+                    <div className="col-xl-4 col-lg-6 col-md-6" key={signal._id}>
                         <div className="card custom-card">
                             <div className="card-body">
                                 <div className="d-flex align-items-center justify-content-between mb-3">
@@ -57,22 +77,22 @@ const AdminSignals = () => {
                                 </div>
                                 <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Entry</span>
-                                    <span>{signal.entry}</span>
+                                    <span>{signal.entryPrice}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Stop Loss</span>
-                                    <span className="text-danger">{signal.sl}</span>
+                                    <span className="text-danger">{signal.stopLoss}</span>
                                 </div>
                                 <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Take Profit</span>
-                                    <span className="text-success">{signal.tp}</span>
+                                    <span className="text-success">{signal.takeProfit}</span>
                                 </div>
                             </div>
                             <div className="card-footer d-flex justify-content-between align-items-center">
-                                <span className="text-muted fs-12"><i className="bx bx-time-five me-1"></i>{signal.posted}</span>
+                                <span className="text-muted fs-12"><i className="bx bx-time-five me-1"></i>{new Date(signal.createdAt).toLocaleString()}</span>
                                 <div className="btn-group">
                                     <button className="btn btn-sm btn-light"><i className="ri-edit-line"></i></button>
-                                    <button className="btn btn-sm btn-light text-danger" onClick={() => handleDelete(signal.id)}><i className="ri-delete-bin-line"></i></button>
+                                    <button className="btn btn-sm btn-light text-danger" onClick={() => handleDelete(signal._id)}><i className="ri-delete-bin-line"></i></button>
                                 </div>
                             </div>
                         </div>

@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminDeposits = () => {
     // Mock Data
-    const [deposits, setDeposits] = useState([
-        { id: 'DEP-001', user: 'John Doe', amount: '$5,000.00', method: 'USDT TRC20', date: '2026-02-18 10:30', status: 'Pending', proof: 'proof.jpg' },
-        { id: 'DEP-002', user: 'Michael Lee', amount: '$10,000.00', method: 'BTC', date: '2026-02-18 11:15', status: 'Approved', proof: 'proof.jpg' },
-        { id: 'DEP-003', user: 'Sarah Connor', amount: '$1,000.00', method: 'ETH', date: '2026-02-17 15:00', status: 'Rejected', proof: 'proof.jpg' },
-    ]);
+    const [deposits, setDeposits] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleAction = (id, action) => {
-        if (action === 'approve') {
-            setDeposits(deposits.map(d => d.id === id ? { ...d, status: 'Approved' } : d));
-            toast.success('Deposit approved successfully');
-        } else if (action === 'reject') {
-            setDeposits(deposits.map(d => d.id === id ? { ...d, status: 'Rejected' } : d));
-            toast.error('Deposit rejected');
+    const fetchDeposits = async () => {
+        try {
+            const { data } = await api.get('/admin/deposits');
+            if (data.success) {
+                setDeposits(data.data);
+            }
+        } catch (error) {
+            toast.error('Failed to load deposits');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchDeposits();
+    }, []);
+
+    const handleAction = async (id, action) => {
+        try {
+            const url = action === 'approve' ? `/admin/deposits/${id}/approve` : `/admin/deposits/${id}/reject`;
+            const { data } = await api.put(url);
+            if (data.success) {
+                toast.success(`Deposit ${action}d successfully`);
+                fetchDeposits();
+            }
+        } catch (error) {
+            toast.error(`Failed to ${action} deposit`);
         }
     };
 
@@ -65,29 +83,29 @@ const AdminDeposits = () => {
                                     </thead>
                                     <tbody>
                                         {deposits.map((dep) => (
-                                            <tr key={dep.id}>
-                                                <td><span className="fw-medium">{dep.id}</span></td>
-                                                <td>{dep.user}</td>
-                                                <td><span className="fw-bold text-success">{dep.amount}</span></td>
-                                                <td><span className="badge bg-light text-dark">{dep.method}</span></td>
-                                                <td>{dep.date}</td>
+                                            <tr key={dep._id}>
+                                                <td><span className="fw-medium">{dep._id.substring(0, 8)}...</span></td>
+                                                <td>{dep.user?.profile?.fullname || dep.user?.email || 'Unknown'}</td>
+                                                <td><span className="fw-bold text-success">${dep.amount}</span></td>
+                                                <td><span className="badge bg-light text-dark">{dep.details}</span></td>
+                                                <td>{new Date(dep.createdAt).toLocaleString()}</td>
                                                 <td>
-                                                    <span className={`badge bg-${dep.status === 'Approved' ? 'success' : dep.status === 'Rejected' ? 'danger' : 'warning'}-transparent`}>
+                                                    <span className={`badge bg-${dep.status === 'completed' ? 'success' : dep.status === 'failed' ? 'danger' : 'warning'}-transparent`}>
                                                         {dep.status}
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {dep.status === 'Pending' && (
+                                                    {dep.status === 'pending' && (
                                                         <div className="d-flex gap-2">
-                                                            <button className="btn btn-sm btn-success-light" onClick={() => handleAction(dep.id, 'approve')}>
+                                                            <button className="btn btn-sm btn-success-light" onClick={() => handleAction(dep._id, 'approve')}>
                                                                 <i className="bx bx-check me-1"></i>Approve
                                                             </button>
-                                                            <button className="btn btn-sm btn-danger-light" onClick={() => handleAction(dep.id, 'reject')}>
+                                                            <button className="btn btn-sm btn-danger-light" onClick={() => handleAction(dep._id, 'reject')}>
                                                                 <i className="bx bx-x me-1"></i>Reject
                                                             </button>
                                                         </div>
                                                     )}
-                                                    {dep.status !== 'Pending' && (
+                                                    {dep.status !== 'pending' && (
                                                         <span className="text-muted fs-12">No actions</span>
                                                     )}
                                                 </td>

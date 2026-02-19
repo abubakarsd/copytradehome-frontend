@@ -1,24 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminCopyTrading = () => {
     // Mock Data
-    const [experts, setExperts] = useState([
-        { id: 1, name: 'Forex Master', winRate: '95%', profit: '+450%', copiers: 1205, status: 'Active', img: '22.jpg' },
-        { id: 2, name: 'Crypto King', winRate: '88%', profit: '+320%', copiers: 850, status: 'Active', img: '2.jpg' },
-        { id: 3, name: 'Safe Trader', winRate: '92%', profit: '+150%', copiers: 430, status: 'Hidden', img: '23.jpg' },
-    ]);
+    const [experts, setExperts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleAction = (id, action) => {
+    const fetchExperts = async () => {
+        try {
+            const { data } = await api.get('/admin/experts');
+            if (data.success) {
+                setExperts(data.data);
+            }
+        } catch (error) {
+            toast.error('Failed to load experts');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchExperts();
+    }, []);
+
+    const handleAction = async (id, action) => {
         if (action === 'delete') {
             if (window.confirm('Are you sure you want to delete this expert?')) {
-                setExperts(experts.filter(e => e.id !== id));
-                toast.success('Expert deleted successfully');
+                try {
+                    await api.delete(`/admin/experts/${id}`);
+                    toast.success('Expert deleted successfully');
+                    fetchExperts();
+                } catch (error) {
+                    toast.error('Failed to delete expert');
+                }
             }
         } else if (action === 'toggle') {
-            setExperts(experts.map(e => e.id === id ? { ...e, status: e.status === 'Active' ? 'Hidden' : 'Active' } : e));
-            toast.info('Expert status updated');
+            try {
+                await api.put(`/admin/experts/${id}/toggle-status`);
+                toast.info('Expert status updated');
+                fetchExperts();
+            } catch (error) {
+                toast.error('Failed to update status');
+            }
         }
     };
 
@@ -61,7 +86,7 @@ const AdminCopyTrading = () => {
                                     </thead>
                                     <tbody>
                                         {experts.map((expert) => (
-                                            <tr key={expert.id}>
+                                            <tr key={expert._id}>
                                                 <td>
                                                     <div className="d-flex align-items-center">
                                                         <span className="avatar avatar-sm me-2">
@@ -74,17 +99,17 @@ const AdminCopyTrading = () => {
                                                 <td><span className="text-success">{expert.profit}</span></td>
                                                 <td>{expert.copiers}</td>
                                                 <td>
-                                                    <span className={`badge bg-${expert.status === 'Active' ? 'success' : 'secondary'}-transparent`}>
+                                                    <span className={`badge bg-${expert.status === 'active' ? 'success' : 'secondary'}-transparent`}>
                                                         {expert.status}
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <div className="hstack gap-2 fs-15">
                                                         <button className="btn btn-icon btn-sm btn-info-light"><i className="ri-edit-line"></i></button>
-                                                        <button className="btn btn-icon btn-sm btn-warning-light" onClick={() => handleAction(expert.id, 'toggle')}>
-                                                            <i className={`bx bx-${expert.status === 'Active' ? 'hide' : 'show'}`}></i>
+                                                        <button className="btn btn-icon btn-sm btn-warning-light" onClick={() => handleAction(expert._id, 'toggle')}>
+                                                            <i className={`bx bx-${expert.status === 'active' ? 'hide' : 'show'}`}></i>
                                                         </button>
-                                                        <button className="btn btn-icon btn-sm btn-danger-light" onClick={() => handleAction(expert.id, 'delete')}><i className="ri-delete-bin-line"></i></button>
+                                                        <button className="btn btn-icon btn-sm btn-danger-light" onClick={() => handleAction(expert._id, 'delete')}><i className="ri-delete-bin-line"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
