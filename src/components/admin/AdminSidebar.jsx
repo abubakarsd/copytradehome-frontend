@@ -28,7 +28,7 @@ const AdminSidebar = () => {
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin" className={`side-menu__item ${pathname === '/admin' ? 'active' : ''}`}>
+                            <Link to="/master-key" className={`side-menu__item ${isActive('/master-key') && !isActive('/master-key/') ? 'active' : ''}`}>
                                 <i className="bx bx-home-circle side-menu__icon"></i>
                                 <span className="side-menu__label">Dashboard</span>
                             </Link>
@@ -39,28 +39,28 @@ const AdminSidebar = () => {
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/users" className={`side-menu__item ${isActive('/admin/users') ? 'active' : ''}`}>
+                            <Link to="/master-key/users" className={`side-menu__item ${isActive('/master-key/users') ? 'active' : ''}`}>
                                 <i className="bx bx-user side-menu__icon"></i>
                                 <span className="side-menu__label">Users</span>
                             </Link>
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/deposits" className={`side-menu__item ${isActive('/admin/deposits') ? 'active' : ''}`}>
+                            <Link to="/master-key/deposits" className={`side-menu__item ${isActive('/master-key/deposits') ? 'active' : ''}`}>
                                 <i className="bx bx-money side-menu__icon"></i>
                                 <span className="side-menu__label">Deposits</span>
                             </Link>
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/withdrawals" className={`side-menu__item ${isActive('/admin/withdrawals') ? 'active' : ''}`}>
+                            <Link to="/master-key/withdrawals" className={`side-menu__item ${isActive('/master-key/withdrawals') ? 'active' : ''}`}>
                                 <i className="bx bx-up-arrow-circle side-menu__icon"></i>
                                 <span className="side-menu__label">Withdrawals</span>
                             </Link>
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/wallets" className={`side-menu__item ${isActive('/admin/wallets') ? 'active' : ''}`}>
+                            <Link to="/master-key/wallets" className={`side-menu__item ${isActive('/master-key/wallets') ? 'active' : ''}`}>
                                 <i className="bx bx-wallet side-menu__icon"></i>
                                 <span className="side-menu__label">System Wallets</span>
                             </Link>
@@ -71,21 +71,21 @@ const AdminSidebar = () => {
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/copy-trading" className={`side-menu__item ${isActive('/admin/copy-trading') ? 'active' : ''}`}>
+                            <Link to="/master-key/copy-trading" className={`side-menu__item ${isActive('/master-key/copy-trading') ? 'active' : ''}`}>
                                 <i className="bx bx-copy-alt side-menu__icon"></i>
                                 <span className="side-menu__label">Copy Trading</span>
                             </Link>
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/trade-history" className={`side-menu__item ${isActive('/admin/trade-history') ? 'active' : ''}`}>
+                            <Link to="/master-key/trade-history" className={`side-menu__item ${isActive('/master-key/trade-history') ? 'active' : ''}`}>
                                 <i className="bx bx-history side-menu__icon"></i>
                                 <span className="side-menu__label">Trade History</span>
                             </Link>
                         </li>
 
                         <li className="slide">
-                            <Link to="/admin/signals" className={`side-menu__item ${isActive('/admin/signals') ? 'active' : ''}`}>
+                            <Link to="/master-key/signals" className={`side-menu__item ${isActive('/master-key/signals') ? 'active' : ''}`}>
                                 <i className="bx bx-signal-4 side-menu__icon"></i>
                                 <span className="side-menu__label">Signals</span>
                             </Link>

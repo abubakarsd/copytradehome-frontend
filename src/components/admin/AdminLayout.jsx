@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
 import AdminHeader from './AdminHeader';
 import AdminSidebar from './AdminSidebar';
-import DashboardFooter from '../dashboard/DashboardFooter'; // Reusing footer
+import DashboardFooter from '../dashboard/DashboardFooter';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const AdminLayout = () => {
+    const { isAuthenticated } = useAdminAuth();
     const [isLoading, setIsLoading] = useState(true);
+
+    if (!isAuthenticated) {
+        return <Navigate to="/master-key/login" replace />;
+    }
 
     useEffect(() => {
         // Set HTML attributes
