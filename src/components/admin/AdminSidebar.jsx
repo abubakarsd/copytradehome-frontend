@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 
 const AdminSidebar = () => {
-    const { logout } = useAuth();
+    const { logout } = useAdminAuth();
     const location = useLocation();
     const { pathname } = location;
 

@@ -31,14 +31,6 @@ export const AdminAuthProvider = ({ children }) => {
         setIsAuthenticated(false);
     };
 
-    // Optional: Validate token on mount
-    useEffect(() => {
-        const token = localStorage.getItem('admin_token');
-        if (token) {
-            setIsAuthenticated(true);
-        }
-    }, []);
-
     return (
         <AdminAuthContext.Provider value={{ adminToken, isAuthenticated, login, logout }}>
             {children}
