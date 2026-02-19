@@ -1,32 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminUsers = () => {
     // Mock Data
-    const [users, setUsers] = useState([
-        { id: 1, name: 'John Doe', email: 'john@example.com', country: 'USA', balance: '$12,450.00', status: 'Active', joined: '2026-01-15' },
-        { id: 2, name: 'Alice Smith', email: 'alice@test.com', country: 'UK', balance: '$450.00', status: 'Pending', joined: '2026-02-10' },
-        { id: 3, name: 'Robert Brown', email: 'rob@demo.com', country: 'Canada', balance: '$0.00', status: 'Banned', joined: '2025-12-05' },
-        { id: 4, name: 'Michael Lee', email: 'lee@crypto.net', country: 'Singapore', balance: '$55,000.00', status: 'Active', joined: '2026-01-22' },
-        { id: 5, name: 'Sarah Connor', email: 'sarah@sky.net', country: 'USA', balance: '$2,300.00', status: 'Active', joined: '2026-02-14' },
-    ]);
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleAction = (id, action) => {
-        if (action === 'delete') {
-            if (window.confirm('Are you sure you want to delete this user?')) {
-                setUsers(users.filter(u => u.id !== id));
-                toast.success('User deleted successfully');
+    const fetchUsers = async () => {
+        try {
+            const { data } = await api.get('/admin/users');
+            if (data.success) {
+                // Map backend data to frontend format
+                const mappedUsers = data.data.map(user => ({
+                    id: user._id,
+                    name: user.profile?.fullname || 'N/A',
+                    email: user.email,
+                    country: user.profile?.country || 'N/A',
+                    balance: '---', // Balance requires separate fetch/aggregation
+                    status: user.isBanned ? 'Banned' : (user.isVerified ? 'Active' : 'Unverified'),
+                    joined: new Date(user.createdAt).toLocaleDateString()
+                }));
+                setUsers(mappedUsers);
             }
-        } else if (action === 'ban') {
-            setUsers(users.map(u => u.id === id ? { ...u, status: 'Banned' } : u));
-            toast.warning('User has been banned');
-        } else if (action === 'activate') {
-            setUsers(users.map(u => u.id === id ? { ...u, status: 'Active' } : u));
-            toast.success('User activated successfully');
+        } catch (error) {
+            toast.error('Failed to load users');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const handleAction = async (id, action) => {
+        if (action === 'delete') {
+            if (window.confirm('Delete functionality is currently disabled for safety.')) {
+                // api.delete(...)
+            }
+        } else if (action === 'ban' || action === 'activate') {
+            try {
+                const { data } = await api.put(`/admin/users/${id}/toggle-ban`);
+                if (data.success) {
+                    toast.success(`User ${data.data.isBanned ? 'banned' : 'activated'} successfully`);
+                    fetchUsers(); // Refresh list
+                }
+            } catch (error) {
+                toast.error('Failed to update user status');
+            }
         } else if (action === 'login') {
-            toast.info(`Logging in as ${users.find(u => u.id === id).name}...`);
-            // Logic to impersonate user would go here
+            toast.info('Impersonation is not yet implemented backend-side');
         }
     };
 

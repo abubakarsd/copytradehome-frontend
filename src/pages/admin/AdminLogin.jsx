@@ -18,12 +18,12 @@ const AdminLogin = () => {
         // Simple mock validation for now. 
         // In production, this calls the backend.
         try {
-            if (email === 'admin@invest-platform.com' && password === 'admin123') {
-                await login('mock-admin-token-12345');
+            const result = await login(email, password);
+            if (result.success) {
                 toast.success('Welcome back, Master Admin');
                 navigate('/master-key');
             } else {
-                toast.error('Invalid Master Key credentials');
+                toast.error(result.error || 'Invalid Master Key credentials');
             }
         } catch (error) {
             toast.error('Login failed');
