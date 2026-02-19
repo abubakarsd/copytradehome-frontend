@@ -108,14 +108,14 @@ function App() {
               <Route path="/stocks" element={<Stocks />} />
               <Route path="/green-energy" element={<GreenEnergy />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
-
-              {/* Auth Routes */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
             </Route>
+
+            {/* Auth Routes - Isolated from site Header/Footer */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* <Route path="/reset-password" element={<ResetPassword />} /> */}
 
             {/* Protected User Routes */}
             <Route path="/dashboard" element={<Dashboard />}>
@@ -160,7 +160,7 @@ function App() {
           </Routes>
         </AdminAuthProvider>
       </AuthProvider>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import '../assets/css/home.css';
 import Services from '../components/sections/Services';
 import CoinList from '../components/sections/CoinList';
@@ -23,7 +21,6 @@ const Home = () => {
         <meta name="twitter:description" content="Trade stocks, crypto, and copy experts with CopyTradeHome." />
         <meta name="twitter:image" content="/assets/images/banner-02.png" />
       </Helmet>
-      <Header />
       <main>
         {/* Banner Section */}
         <section className="banner">
@@ -57,7 +54,6 @@ const Home = () => {
         <Blog />
         <Sale />
       </main>
-      <Footer />
     </>
   );
 };
