@@ -25,7 +25,54 @@ const AdminCopyTrading = () => {
         fetchExperts();
     }, []);
 
+    const [showModal, setShowModal] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        winRate: '',
+        profitShare: '',
+        copiers: 0,
+        status: 'active',
+        avatar: '21.jpg'
+    });
+
+    const handleChange = (e) => {
+        if (e.target.type === 'file') {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setFormData({ ...formData, avatar: reader.result });
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            setFormData({ ...formData, [e.target.name]: e.target.value });
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // Clean data for backend
+            const payload = {
+                ...formData,
+                winRate: parseFloat(formData.winRate.replace(/[^0-9.]/g, '')),
+                profitShare: parseFloat(formData.profitShare.replace(/[^0-9.]/g, '')),
+                copiers: parseInt(formData.copiers)
+            };
+
+            await api.post('/admin/experts', payload);
+            toast.success('Expert added successfully');
+            setShowModal(false);
+            setFormData({ name: '', winRate: '', profitShare: '', copiers: 0, status: 'active', avatar: '21.jpg' });
+            fetchExperts();
+        } catch (error) {
+            toast.error(error.response?.data?.error || 'Failed to add expert');
+        }
+    };
+
     const handleAction = async (id, action) => {
+        /* ... existing deletion logic ... */
         if (action === 'delete') {
             if (window.confirm('Are you sure you want to delete this expert?')) {
                 try {
@@ -59,7 +106,7 @@ const AdminCopyTrading = () => {
                         <h1 className="page-title fw-medium fs-18 mb-0">Copy Trading Management</h1>
                         <p className="mb-0 text-muted fs-13">Add or edit trading experts designated for copy trading.</p>
                     </div>
-                    <button className="btn btn-primary" onClick={() => toast.info('Open Add Expert Modal')}>
+                    <button className="btn btn-primary" onClick={() => setShowModal(true)}>
                         <i className="bx bx-plus me-1"></i> Add New Expert
                     </button>
                 </div>
@@ -90,7 +137,11 @@ const AdminCopyTrading = () => {
                                                 <td>
                                                     <div className="d-flex align-items-center">
                                                         <span className="avatar avatar-sm me-2">
-                                                            <img src={`/assets/images/faces/${expert.img}`} alt={expert.name} onError={(e) => { e.target.src = '/assets/images/faces/1.jpg' }} />
+                                                            <img
+                                                                src={expert.avatar?.startsWith('data:image') || expert.avatar?.startsWith('http') ? expert.avatar : `/assets/dashboard/images/${expert.avatar}`}
+                                                                alt={expert.name}
+                                                                onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/21.jpg' }}
+                                                            />
                                                         </span>
                                                         <span className="fw-medium">{expert.name}</span>
                                                     </div>
@@ -121,7 +172,51 @@ const AdminCopyTrading = () => {
                     </div>
                 </div>
             </div>
-        </div>
+            {/* Add Expert Modal */}
+            {showModal && (
+                <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Add New Expert</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                            </div>
+                            <form onSubmit={handleSubmit}>
+                                <div className="modal-body">
+                                    <div className="mb-3">
+                                        <label className="form-label">Expert Name</label>
+                                        <input type="text" className="form-control" name="name" value={formData.name} onChange={handleChange} required />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Expert Avatar</label>
+                                        <input type="file" className="form-control" name="avatarFile" onChange={handleChange} accept="image/*" />
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6 mb-3">
+                                            <label className="form-label">Win Rate</label>
+                                            <input type="text" className="form-control" name="winRate" value={formData.winRate} onChange={handleChange} placeholder="e.g. 95%" required />
+                                        </div>
+                                        <div className="col-md-6 mb-3">
+                                            <label className="form-label">Profit Share</label>
+                                            <input type="text" className="form-control" name="profit" value={formData.profit} onChange={handleChange} placeholder="e.g. +450%" required />
+                                        </div>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Copiers</label>
+                                        <input type="number" className="form-control" name="copiers" value={formData.copiers} onChange={handleChange} required />
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-light" onClick={() => setShowModal(false)}>Close</button>
+                                    <button type="submit" className="btn btn-primary">Add Expert</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )
+            }
+        </div >
     );
 };
 

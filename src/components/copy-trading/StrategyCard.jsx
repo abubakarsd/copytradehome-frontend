@@ -65,7 +65,11 @@ const StrategyCard = ({ strategy }) => {
                     <div className="d-flex align-items-center">
                         <div className="me-2">
                             <span className="avatar avatar-md avatar-rounded bg-light p-2">
-                                <img src={strategy.avatar} alt={strategy.name} />
+                                <img
+                                    src={strategy.avatar?.startsWith('data:image') || strategy.avatar?.startsWith('http') ? strategy.avatar : `/assets/dashboard/images/${strategy.avatar}`}
+                                    alt={strategy.name}
+                                    onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/21.jpg' }}
+                                />
                             </span>
                         </div>
                         <div className="mb-0">

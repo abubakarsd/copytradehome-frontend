@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Chart from 'react-apexcharts';
 import { Link } from 'react-router-dom';
 import DepositDetailsModal from './DepositDetailsModal';
+import api from '../../utils/axios';
+import { toast } from 'react-toastify';
 
 const DashboardDeposit = () => {
     const [amount, setAmount] = useState('');
@@ -101,15 +103,37 @@ const DashboardDeposit = () => {
         { name: 'Account Value', type: 'line', data: [1000, 1050, 1150, 1200, 1400, 1550, 1850] }
     ];
 
-    const wallets = [
-        { id: 'USDCTrc20_', name: 'USDC (TRC20)', code: 'USDCTRC20_', img: '2026-11876038991767488048.jpg' },
-        { id: 'XRP', name: 'XRP', code: 'XRP', img: '2026-5499334291767488183.jpg' },
-        { id: 'usdt', name: 'USDT TRC20', code: 'USDT', img: '2026-16096937901767488278.jpg' },
-        { id: 'eth', name: 'ETHEREUM', code: 'ETH', img: '2026-4889608771767487892.jpg' },
-        { id: 'ERC20', name: 'USDT ERC20', code: 'ERC20', img: '2026-18077880491767488392.jpg' },
-        { id: 'btc', name: 'BITCOIN', code: 'BTC', img: '2026-273381261767488466.jpg' },
-        { id: 'WIRE', name: 'WIRE TRANSFER', code: 'WIRE', img: '2026-11916319751767409820.jpg' }
-    ];
+    const [wallets, setWallets] = useState([]);
+
+    // Fetch system wallets
+    useEffect(() => {
+        const fetchWallets = async () => {
+            try {
+                const { data } = await api.get('/wallet/system-wallets');
+                if (data.success) {
+                    // Map backend data to frontend structure if needed, or just use as is
+                    // Backend: { name, currency, chain, address, icon, qrCode }
+                    // Frontend expects: { id, name, code, img }
+                    const mapped = data.data.map(w => ({
+                        id: w._id,
+                        name: w.name,
+                        code: w.currency,
+                        chain: w.chain, // Keep chain info
+                        address: w.address,
+                        qrCode: w.qrCode,
+                        img: w.icon
+                    }));
+                    setWallets(mapped);
+                    if (mapped.length > 0) setSelectedWallet(mapped[0].id);
+                }
+            } catch (error) {
+                console.error("Failed to fetch wallets", error);
+                toast.error("Failed to load deposit methods");
+            }
+        };
+
+        fetchWallets();
+    }, []);
 
     return (
         <div className="container-fluid page-container main-body-container">
@@ -152,9 +176,9 @@ const DashboardDeposit = () => {
                                         <div className="lh-1">
                                             <span className="avatar avatar-rounded">
                                                 <img
-                                                    src={`/assets/dashboard/images/${wallet.img}`}
+                                                    src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : `/assets/dashboard/images/${wallet.img}`}
                                                     alt={wallet.name}
-                                                    onError={(e) => { e.target.onerror = null; e.target.src = '/assets/dashboard/images/default-crypto.png' }}
+                                                    onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                 />
                                             </span>
                                         </div>
@@ -590,7 +614,12 @@ const DashboardDeposit = () => {
                                 {wallets.map((wallet) => (
                                     <div className="d-flex align-items-center p-3 mb-2 rounded bg-light" key={wallet.id}>
                                         <div className="avatar-sm bg-white rounded-circle d-flex align-items-center justify-content-center me-3 border" style={{ width: '40px', height: '40px' }}>
-                                            <img src={`/assets/dashboard/images/${wallet.img}`} alt={wallet.name} style={{ width: '40px', height: '40px' }} />
+                                            <img
+                                                src={wallet.img?.startsWith('data:image') || wallet.img?.startsWith('http') ? wallet.img : `/assets/dashboard/images/${wallet.img}`}
+                                                alt={wallet.name}
+                                                style={{ width: '40px', height: '40px' }}
+                                                onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
+                                            />
                                         </div>
                                         <div>
                                             <h6 className="mb-1">{wallet.name}</h6>

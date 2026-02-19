@@ -25,6 +25,39 @@ const AdminSignals = () => {
         fetchSignals();
     }, []);
 
+    const [showModal, setShowModal] = useState(false);
+    const [formData, setFormData] = useState({
+        pair: '',
+        type: 'Buy',
+        entryPrice: '',
+        stopLoss: '',
+        takeProfit: '',
+        status: 'Active'
+    });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const payload = {
+                ...formData,
+                entryPrice: parseFloat(formData.entryPrice),
+                stopLoss: parseFloat(formData.stopLoss),
+                takeProfit: parseFloat(formData.takeProfit)
+            };
+            await api.post('/admin/signals', payload);
+            toast.success('Signal posted successfully');
+            setShowModal(false);
+            setFormData({ pair: '', type: 'Buy', entryPrice: '', stopLoss: '', takeProfit: '', status: 'Active' });
+            fetchSignals();
+        } catch (error) {
+            toast.error(error.response?.data?.error || 'Failed to post signal');
+        }
+    };
+
     const handleDelete = async (id) => {
         if (window.confirm('Delete this signal?')) {
             try {
@@ -49,7 +82,7 @@ const AdminSignals = () => {
                         <h1 className="page-title fw-medium fs-18 mb-0">Trading Signals</h1>
                         <p className="mb-0 text-muted fs-13">Post and manage trading signals for users.</p>
                     </div>
-                    <button className="btn btn-primary" onClick={() => toast.info('Open Add Signal Modal')}>
+                    <button className="btn btn-primary" onClick={() => setShowModal(true)}>
                         <i className="bx bx-plus me-1"></i> Post New Signal
                     </button>
                 </div>
@@ -99,7 +132,56 @@ const AdminSignals = () => {
                     </div>
                 ))}
             </div>
-        </div>
+            {/* Add Signal Modal */}
+            {showModal && (
+                <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Post New Signal</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                            </div>
+                            <form onSubmit={handleSubmit}>
+                                <div className="modal-body">
+                                    <div className="row">
+                                        <div className="col-md-6 mb-3">
+                                            <label className="form-label">Pair</label>
+                                            <input type="text" className="form-control" name="pair" value={formData.pair} onChange={handleChange} placeholder="e.g. BTC/USD" required />
+                                        </div>
+                                        <div className="col-md-6 mb-3">
+                                            <label className="form-label">Type</label>
+                                            <select className="form-select" name="type" value={formData.type} onChange={handleChange}>
+                                                <option value="Buy">Buy</option>
+                                                <option value="Sell">Sell</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Entry Price</label>
+                                        <input type="text" className="form-control" name="entryPrice" value={formData.entryPrice} onChange={handleChange} required />
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6 mb-3">
+                                            <label className="form-label">Stop Loss</label>
+                                            <input type="text" className="form-control" name="stopLoss" value={formData.stopLoss} onChange={handleChange} required />
+                                        </div>
+                                        <div className="col-md-6 mb-3">
+                                            <label className="form-label">Take Profit</label>
+                                            <input type="text" className="form-control" name="takeProfit" value={formData.takeProfit} onChange={handleChange} required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-light" onClick={() => setShowModal(false)}>Close</button>
+                                    <button type="submit" className="btn btn-primary">Post Signal</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )
+            }
+        </div >
     );
 };
 

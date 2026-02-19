@@ -1,33 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminTradeHistory = () => {
     // Mock Data
-    const [trades, setTrades] = useState([
-        { id: 'TRD-001', user: 'John Doe', type: 'Buy', asset: 'BTC/USD', amount: '$5,000', pnl: '+$120.50', date: '2026-02-18 14:30', status: 'Closed' },
-        { id: 'TRD-002', user: 'Jane Smith', type: 'Copy', asset: 'Forex Master', amount: '$1,000', pnl: '-$15.00', date: '2026-02-18 12:15', status: 'Open' },
-        { id: 'TRD-003', user: 'Mike Ross', type: 'Sell', asset: 'AAPL', amount: '$2,500', pnl: '+$340.00', date: '2026-02-17 09:45', status: 'Closed' },
-        { id: 'TRD-004', user: 'Rachel Green', type: 'Buy', asset: 'ETH/USD', amount: '$10,000', pnl: '+$850.00', date: '2026-02-16 16:20', status: 'Closed' },
-    ]);
+    const [trades, setTrades] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [showModal, setShowModal] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentTrade, setCurrentTrade] = useState({
-        id: '',
         user: '',
         type: 'Buy',
         asset: '',
         amount: '',
         pnl: '',
-        date: '',
-        status: 'Open'
+        status: 'Open',
+        date: ''
     });
 
-    const handleDelete = (id) => {
+    const fetchTrades = async () => {
+        try {
+            const { data } = await api.get('/admin/trades');
+            if (data.success) {
+                setTrades(data.data);
+            }
+        } catch (error) {
+            toast.error('Failed to load trades');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchTrades();
+    }, []);
+
+    const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this trade?')) {
-            setTrades(trades.filter(t => t.id !== id));
-            toast.success('Trade deleted successfully');
+            try {
+                await api.delete(`/admin/trades/${id}`);
+                toast.success('Trade deleted successfully');
+                fetchTrades();
+            } catch (error) {
+                toast.error('Failed to delete trade');
+            }
         }
     };
 
@@ -39,14 +57,13 @@ const AdminTradeHistory = () => {
 
     const handleAdd = () => {
         setCurrentTrade({
-            id: `TRD-${Date.now().toString().slice(-3)}`,
             user: '',
             type: 'Buy',
             asset: '',
             amount: '',
-            pnl: '',
-            date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-            status: 'Open'
+            pnl: '', // Optional for new trade
+            status: 'Open',
+            date: ''
         });
         setIsEditing(false);
         setShowModal(true);
@@ -56,16 +73,21 @@ const AdminTradeHistory = () => {
         setCurrentTrade({ ...currentTrade, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isEditing) {
-            setTrades(trades.map(t => t.id === currentTrade.id ? currentTrade : t));
-            toast.success('Trade updated successfully');
-        } else {
-            setTrades([currentTrade, ...trades]);
-            toast.success('Trade added successfully');
+        try {
+            if (isEditing) {
+                await api.put(`/admin/trades/${currentTrade._id}`, currentTrade);
+                toast.success('Trade updated successfully');
+            } else {
+                await api.post('/admin/trades', currentTrade);
+                toast.success('Trade added successfully');
+            }
+            setShowModal(false);
+            fetchTrades();
+        } catch (error) {
+            toast.error(error.response?.data?.error || 'Operation failed');
         }
-        setShowModal(false);
     };
 
     return (
@@ -114,8 +136,8 @@ const AdminTradeHistory = () => {
                                     </thead>
                                     <tbody>
                                         {trades.map((trade) => (
-                                            <tr key={trade.id}>
-                                                <td><span className="fw-medium">{trade.id}</span></td>
+                                            <tr key={trade._id}>
+                                                <td><span className="fw-medium">{trade._id.substring(0, 8)}...</span></td>
                                                 <td>
                                                     <div className="d-flex align-items-center">
                                                         <span className="avatar avatar-xs me-2 bg-primary-transparent rounded-circle">{trade.user.charAt(0)}</span>
@@ -129,8 +151,8 @@ const AdminTradeHistory = () => {
                                                 </td>
                                                 <td>{trade.asset}</td>
                                                 <td>{trade.amount}</td>
-                                                <td className={trade.pnl.startsWith('+') ? 'text-success' : 'text-danger'}>{trade.pnl}</td>
-                                                <td>{trade.date}</td>
+                                                <td className={trade.pnl?.startsWith('+') ? 'text-success' : 'text-danger'}>{trade.pnl}</td>
+                                                <td>{new Date(trade.createdAt).toLocaleString()}</td>
                                                 <td>
                                                     <span className={`badge bg-${trade.status === 'Open' ? 'warning' : 'light text-dark'}`}>
                                                         {trade.status}
@@ -139,7 +161,7 @@ const AdminTradeHistory = () => {
                                                 <td>
                                                     <div className="hstack gap-2 fs-15">
                                                         <button className="btn btn-icon btn-sm btn-info-light" onClick={() => handleEdit(trade)}><i className="ri-edit-line"></i></button>
-                                                        <button className="btn btn-icon btn-sm btn-danger-light" onClick={() => handleDelete(trade.id)}><i className="ri-delete-bin-line"></i></button>
+                                                        <button className="btn btn-icon btn-sm btn-danger-light" onClick={() => handleDelete(trade._id)}><i className="ri-delete-bin-line"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

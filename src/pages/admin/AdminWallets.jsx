@@ -10,10 +10,10 @@ const AdminWallets = () => {
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
-        code: '',
+        currency: '',
         chain: '',
         address: '',
-        img: 'default-crypto.png',
+        icon: 'tether-usdt-logo.svg',
         qrCode: '' // Base64 or URL
     });
 
@@ -52,7 +52,11 @@ const AdminWallets = () => {
             if (file) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setFormData({ ...formData, qrCode: reader.result });
+                    if (e.target.name === 'qrCodeFile') {
+                        setFormData({ ...formData, qrCode: reader.result });
+                    } else if (e.target.name === 'iconFile') {
+                        setFormData({ ...formData, icon: reader.result });
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -67,10 +71,10 @@ const AdminWallets = () => {
             await api.post('/admin/wallets', formData);
             toast.success('Wallet added successfully');
             setShowModal(false);
-            setFormData({ name: '', code: '', chain: '', address: '', img: 'default-crypto.png', qrCode: '' });
+            setFormData({ name: '', currency: '', chain: '', address: '', icon: 'tether-usdt-logo.svg', qrCode: '' });
             fetchWallets();
         } catch (error) {
-            toast.error('Failed to add wallet');
+            toast.error(error.response?.data?.error || 'Failed to add wallet');
         }
     };
 
@@ -115,15 +119,15 @@ const AdminWallets = () => {
                                                 <td>
                                                     <span className="avatar avatar-sm bg-light">
                                                         <img
-                                                            src={`/assets/dashboard/images/${wallet.img}`}
+                                                            src={wallet.icon?.startsWith('data:image') || wallet.icon?.startsWith('http') ? wallet.icon : `/assets/dashboard/images/${wallet.icon}`}
                                                             alt={wallet.name}
-                                                            onError={(e) => { e.target.onerror = null; e.target.src = '/assets/dashboard/images/default-crypto.png' }}
+                                                            onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/tether-usdt-logo.svg' }}
                                                         />
                                                     </span>
                                                 </td>
                                                 <td>{wallet.name}</td>
                                                 <td><span className="badge bg-info-transparent">{wallet.chain}</span></td>
-                                                <td><span className="badge bg-light text-dark">{wallet.code}</span></td>
+                                                <td><span className="badge bg-light text-dark">{wallet.currency}</span></td>
                                                 <td>
                                                     <div className="d-flex align-items-center">
                                                         <span className="text-truncate" style={{ maxWidth: '150px' }}>{wallet.address}</span>
@@ -171,12 +175,17 @@ const AdminWallets = () => {
                                     <div className="row">
                                         <div className="col-md-6 mb-3">
                                             <label className="form-label">Currency Code</label>
-                                            <input type="text" className="form-control" name="code" value={formData.code} onChange={handleChange} required placeholder="e.g. USDT" />
+                                            <input type="text" className="form-control" name="currency" value={formData.currency} onChange={handleChange} required placeholder="e.g. USDT" />
                                         </div>
                                         <div className="col-md-6 mb-3">
                                             <label className="form-label">Chain</label>
                                             <input type="text" className="form-control" name="chain" value={formData.chain} onChange={handleChange} required placeholder="e.g. TRC20" />
                                         </div>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Wallet Icon</label>
+                                        <input type="file" className="form-control" name="iconFile" onChange={handleChange} accept="image/*" />
+                                        <div className="form-text">Leave empty to use default.</div>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Wallet Address</label>

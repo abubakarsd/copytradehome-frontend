@@ -3,17 +3,61 @@ import { Link } from 'react-router-dom';
 import StatsOverview from '../components/copy-trading/StatsOverview';
 import StrategyFilter from '../components/copy-trading/StrategyFilter';
 import StrategyCardList from '../components/copy-trading/StrategyCardList';
-
-import { MOCK_STRATEGIES } from '../data/mockStrategies';
-
 import HowItWorksSection from '../components/copy-trading/HowItWorksSection';
 
+import api from '../utils/axios';
+import { toast } from 'react-toastify';
+
 const CopyExpertPage = () => {
-    const [strategies, setStrategies] = useState(MOCK_STRATEGIES);
+    const [strategies, setStrategies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [allStrategies, setAllStrategies] = useState([]); // Store full list for filtering
+
+    const fetchExperts = async () => {
+        try {
+            const { data } = await api.get('/copy-trading/experts');
+            if (data.success) {
+                // Map backend data to StrategyCard format
+                const mapped = data.data.map(expert => ({
+                    id: expert._id,
+                    name: expert.name,
+                    handle: `@${expert.name.toLowerCase().replace(/\s/g, '')}`,
+                    avatar: expert.avatar,
+                    monthlyReturn: parseFloat(expert.profitShare),
+                    risk: 4, // Default
+                    investors: expert.copiers,
+                    id: expert._id,
+                    minInvestment: 100,
+                    description: `Professional trader with ${expert.winRate}% win rate.`,
+                    isPopular: expert.copiers > 50,
+                    isNew: false,
+                    // Mock fields for UI
+                    leverage: '1:500',
+                    fees: '15%',
+                    duration: '2 Years',
+                    activity: 'High',
+                    totalFollowers: expert.copiers + 120,
+                    chartData: [10, 15, 12, 25, 30, 28, 40] // Mock chart
+                }));
+                setStrategies(mapped);
+                setAllStrategies(mapped);
+            }
+        } catch (error) {
+            console.error(error);
+            // Fallback to mock if API fails? Or just empty.
+            // setStrategies(MOCK_STRATEGIES); 
+            toast.error('Failed to load experts');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchExperts();
+    }, []);
 
     const handleFilterChange = (filters) => {
-        // Basic client-side filtering logic
-        let filtered = MOCK_STRATEGIES;
+        let filtered = [...allStrategies]; // Filter from all fetched strategies
 
         if (filters.search) {
             const term = filters.search.toLowerCase();
@@ -38,10 +82,9 @@ const CopyExpertPage = () => {
         } else if (filters.sortBy === 'popularity') {
             filtered.sort((a, b) => b.investors - a.investors);
         }
-        // "newest" would rely on a date field we don't strictly have in mock, ignoring for now
 
-        setStrategies([...filtered]);
-        setCurrentPage(1); // Reset to first page on filter change
+        setStrategies(filtered);
+        setCurrentPage(1);
     };
 
     // Pagination Logic

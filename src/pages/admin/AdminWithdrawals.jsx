@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import api from '../../utils/axios';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 
 const AdminWithdrawals = () => {
     // Mock Data
-    const [withdrawals, setWithdrawals] = useState([
-        { id: 'WDR-001', user: 'Alice Smith', amount: '$200.00', method: 'Bank Transfer', details: 'Chase Bank - **** 1234', date: '2026-02-18 09:00', status: 'Pending' },
-        { id: 'WDR-002', user: 'John Doe', amount: '$500.00', method: 'USDT TRC20', details: 'TXN123456789', date: '2026-02-17 14:20', status: 'Approved' },
-    ]);
+    const [withdrawals, setWithdrawals] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const handleAction = (id, action) => {
-        if (action === 'approve') {
-            setWithdrawals(withdrawals.map(w => w.id === id ? { ...w, status: 'Approved' } : w));
-            toast.success('Withdrawal approved successfully');
-        } else if (action === 'reject') {
-            setWithdrawals(withdrawals.map(w => w.id === id ? { ...w, status: 'Rejected' } : w));
-            toast.error('Withdrawal rejected');
+    const fetchWithdrawals = async () => {
+        try {
+            const { data } = await api.get('/admin/withdrawals');
+            if (data.success) {
+                setWithdrawals(data.data);
+            }
+        } catch (error) {
+            toast.error('Failed to load withdrawals');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchWithdrawals();
+    }, []);
+
+    const handleAction = async (id, action) => {
+        try {
+            const url = action === 'approve' ? `/admin/withdrawals/${id}/approve` : `/admin/withdrawals/${id}/reject`;
+            const { data } = await api.put(url);
+            if (data.success) {
+                toast.success(`Withdrawal ${action}d successfully`);
+                fetchWithdrawals();
+            }
+        } catch (error) {
+            toast.error(`Failed to ${action} withdrawal: ${error.response?.data?.error || 'Unknown error'}`);
         }
     };
 
@@ -65,30 +84,30 @@ const AdminWithdrawals = () => {
                                     </thead>
                                     <tbody>
                                         {withdrawals.map((wdr) => (
-                                            <tr key={wdr.id}>
-                                                <td><span className="fw-medium">{wdr.id}</span></td>
-                                                <td>{wdr.user}</td>
-                                                <td><span className="fw-bold text-danger">{wdr.amount}</span></td>
+                                            <tr key={wdr._id}>
+                                                <td><span className="fw-medium">{wdr._id.substring(0, 8)}...</span></td>
+                                                <td>{wdr.user?.profile?.fullname || wdr.user?.email || 'Unknown'}</td>
+                                                <td><span className="fw-bold text-danger">${wdr.amount}</span></td>
                                                 <td><span className="badge bg-light text-dark">{wdr.method}</span></td>
                                                 <td><small className="text-muted">{wdr.details}</small></td>
-                                                <td>{wdr.date}</td>
+                                                <td>{new Date(wdr.createdAt).toLocaleString()}</td>
                                                 <td>
-                                                    <span className={`badge bg-${wdr.status === 'Approved' ? 'success' : wdr.status === 'Rejected' ? 'danger' : 'warning'}-transparent`}>
+                                                    <span className={`badge bg-${wdr.status === 'completed' ? 'success' : wdr.status === 'failed' ? 'danger' : 'warning'}-transparent`}>
                                                         {wdr.status}
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {wdr.status === 'Pending' && (
+                                                    {wdr.status === 'pending' && (
                                                         <div className="d-flex gap-2">
-                                                            <button className="btn btn-sm btn-success-light" onClick={() => handleAction(wdr.id, 'approve')}>
+                                                            <button className="btn btn-sm btn-success-light" onClick={() => handleAction(wdr._id, 'approve')}>
                                                                 <i className="bx bx-check me-1"></i>Approve
                                                             </button>
-                                                            <button className="btn btn-sm btn-danger-light" onClick={() => handleAction(wdr.id, 'reject')}>
+                                                            <button className="btn btn-sm btn-danger-light" onClick={() => handleAction(wdr._id, 'reject')}>
                                                                 <i className="bx bx-x me-1"></i>Reject
                                                             </button>
                                                         </div>
                                                     )}
-                                                    {wdr.status !== 'Pending' && (
+                                                    {wdr.status !== 'pending' && (
                                                         <span className="text-muted fs-12">No actions</span>
                                                     )}
                                                 </td>
