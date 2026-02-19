@@ -16,7 +16,7 @@ const AdminWallets = () => {
         currency: '',
         chain: '',
         address: '',
-        icon: 'tether-usdt-logo.svg',
+        icon: '',
         qrCode: '' // Base64 or URL
     });
 
@@ -194,16 +194,9 @@ const AdminWallets = () => {
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Wallet Icon</label>
-                                        <input type="file" className="form-control" name="iconFile" onChange={handleChange} accept="image/*" />
-                                        <div className="form-text">Leave empty to use default.</div>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Wallet Address</label>
-                                        <input type="text" className="form-control" name="address" value={formData.address} onChange={handleChange} required placeholder="0x..." />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Upload QR Code</label>
-                                        <input type="file" className="form-control" name="qrCodeFile" onChange={handleChange} accept="image/*" />
+                                        <input type="file" className="form-control" name="iconFile" onChange={handleChange} accept="image/*" onClick={(e) => e.stopPropagation()} />
+                                        ...
+                                        <input type="file" className="form-control" name="qrCodeFile" onChange={handleChange} accept="image/*" onClick={(e) => e.stopPropagation()} />
                                     </div>
                                 </div>
                                 <div className="modal-footer">
