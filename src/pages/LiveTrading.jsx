@@ -49,7 +49,7 @@ const LiveTrading = () => {
                     <h1 className="page-title fw-medium fs-18 mb-0">Live Trade Streaming</h1>
                     <ol className="breadcrumb mb-0">
                         <li className="breadcrumb-item">
-                            <a href="javascript:void(0);">Dashboards</a>
+                            <a href="#" onClick={(e) => e.preventDefault()}>Dashboards</a>
                         </li>
                         <li className="breadcrumb-item active" aria-current="page">
                             Live Trading

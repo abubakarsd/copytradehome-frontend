@@ -96,9 +96,9 @@ const Register = () => {
                                                     required
                                                 />
                                                 <a
-                                                    href="javascript:void(0);"
+                                                    href="#"
                                                     className="show-password-button text-muted"
-                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    onClick={(e) => { e.preventDefault(); setShowPassword(!showPassword); }}
                                                 >
                                                     <i className={showPassword ? "ri-eye-line align-middle" : "ri-eye-off-line align-middle"}></i>
                                                 </a>
@@ -119,9 +119,9 @@ const Register = () => {
                                                     required
                                                 />
                                                 <a
-                                                    href="javascript:void(0);"
+                                                    href="#"
                                                     className="show-password-button text-muted"
-                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    onClick={(e) => { e.preventDefault(); setShowConfirmPassword(!showConfirmPassword); }}
                                                 >
                                                     <i className={showConfirmPassword ? "ri-eye-line align-middle" : "ri-eye-off-line align-middle"}></i>
                                                 </a>

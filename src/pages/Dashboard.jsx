@@ -97,9 +97,13 @@ const Dashboard = () => {
                     loadScript('/assets/js/swiper-bundle.min.js'),
                     loadScript('/assets/dashboard/js/toasts.js'),
                     loadScript('/assets/dashboard/js/tv.js'),
-                    loadScript('/assets/dashboard/js/select2(2).min.js'),
-                    loadScript('/assets/dashboard/js/select2.js'),
                 ]);
+
+                // Order matters for some plugins
+                await loadScript('/assets/dashboard/js/select2(2).min.js');
+                await loadScript('/assets/dashboard/js/select2.js');
+
+                setIsLoading(false);
 
                 // Custom scripts (might rely on above)
                 await loadScript('/assets/dashboard/js/custom.js');
@@ -107,8 +111,9 @@ const Dashboard = () => {
 
             } catch (error) {
                 console.error("Failed to load dashboard assets", error);
-            } finally {
                 setIsLoading(false);
+            } finally {
+                // Done
             }
         };
 

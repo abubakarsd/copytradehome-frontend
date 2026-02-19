@@ -75,7 +75,7 @@ const DashboardSidebar = () => {
                                     'boxSizing': 'border-box'
                                 }}>
                                     <li className="slide side-menu__label1">
-                                        <a href="javascript:void(0)">Dashboard</a>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>Dashboard</a>
                                     </li>
                                     <li className="slide">
                                         <Link to="/dashboard" className={`side-menu__item ${pathname === '/dashboard' ? 'active' : ''}`}>
@@ -119,7 +119,7 @@ const DashboardSidebar = () => {
                                     'transform': 'translate3d(127.5px, 267px, 0px)'
                                 }}>
                                     <li className="slide side-menu__label1">
-                                        <a href="javascript:void(0)">Withdraw</a>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>Withdraw</a>
                                     </li>
                                     <li className="slide">
                                         <Link to="/dashboard/withdraw" className={`side-menu__item ${isActive('/dashboard/withdraw') ? 'active' : ''}`}>
@@ -143,7 +143,7 @@ const DashboardSidebar = () => {
                                 </a>
                                 <ul className="slide-menu child1" data-popper-placement="bottom" style={{ 'position': 'relative', 'left': '0px', 'top': '0px', 'margin': '0px', 'display': isTradingActive ? 'block' : 'none', 'transform': 'translate3d(127.5px, 317px, 0px)' }}>
                                     <li className="slide side-menu__label1">
-                                        <a href="javascript:void(0)">Trading</a>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>Trading</a>
                                     </li>
                                     <li className="slide">
                                         <Link to="/dashboard/stocks" className={`side-menu__item ${pathname.startsWith('/dashboard/stocks') ? 'active' : ''}`}>
@@ -167,7 +167,7 @@ const DashboardSidebar = () => {
                                 </a>
                                 <ul className="slide-menu child1" data-popper-placement="bottom" style={{ 'position': 'relative', 'left': '0px', 'top': '0px', 'margin': '0px', 'display': isCopyTradingActive ? 'block' : 'none', 'transform': 'translate3d(127.5px, 367.5px, 0px)' }}>
                                     <li className="slide side-menu__label1">
-                                        <a href="javascript:void(0)">Copy Trading</a>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>Copy Trading</a>
                                     </li>
                                     <li className="slide">
                                         <Link to="/dashboard/copy-trading" className={`side-menu__item ${pathname === '/dashboard/copy-trading' || pathname.startsWith('/dashboard/copy-trading/view') ? 'active' : ''}`}>
@@ -228,7 +228,7 @@ const DashboardSidebar = () => {
                                 </a>
                                 <ul className="slide-menu child1" style={{ display: isReferralsActive ? 'block' : 'none' }}>
                                     <li className="slide side-menu__label1">
-                                        <a href="javascript:void(0)">Affiliates</a>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>Affiliates</a>
                                     </li>
                                     <li className="slide">
                                         <Link to="/dashboard/referral" className={`side-menu__item ${isActive('/dashboard/referral') ? 'active' : ''}`}>
@@ -252,7 +252,7 @@ const DashboardSidebar = () => {
                                 </a>
                                 <ul className="slide-menu child1" data-popper-placement="bottom" style={{ 'position': 'relative', 'left': '0px', 'top': '0px', 'margin': '0px', 'display': isProfileActive ? 'block' : 'none', 'transform': 'translate3d(127.5px, 709.5px, 0px)' }}>
                                     <li className="slide side-menu__label1">
-                                        <a href="javascript:void(0)">Profile</a>
+                                        <a href="#" onClick={(e) => e.preventDefault()}>Profile</a>
                                     </li>
                                     <li className="slide">
                                         <Link to="/dashboard/profile" className={`side-menu__item ${isActive('/dashboard/profile') ? 'active' : ''}`}>

@@ -65,9 +65,9 @@ const Login = () => {
                                                     required
                                                 />
                                                 <a
-                                                    href="javascript:void(0);"
+                                                    href="#"
                                                     className="show-password-button text-muted"
-                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    onClick={(e) => { e.preventDefault(); setShowPassword(!showPassword); }}
                                                 >
                                                     <i className={showPassword ? "ri-eye-line align-middle" : "ri-eye-off-line align-middle"}></i>
                                                 </a>

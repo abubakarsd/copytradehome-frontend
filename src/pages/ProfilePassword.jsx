@@ -40,8 +40,8 @@ const ProfilePassword = () => {
                         </p>
                     </div>
                     <ol className="breadcrumb mb-0">
-                        <li className="breadcrumb-item"><a href="javascript:void(0);">Pages</a></li>
-                        <li className="breadcrumb-item"><a href="javascript:void(0);">Profile</a></li>
+                        <li className="breadcrumb-item"><a href="#" onClick={(e) => e.preventDefault()}>Pages</a></li>
+                        <li className="breadcrumb-item"><a href="#" onClick={(e) => e.preventDefault()}>Profile</a></li>
                         <li className="breadcrumb-item active" aria-current="page">Password Reset</li>
                     </ol>
                 </div>

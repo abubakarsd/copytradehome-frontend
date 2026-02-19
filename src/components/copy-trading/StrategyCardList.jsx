@@ -42,8 +42,8 @@ const StrategyCardList = ({ strategies, currentPage, totalPages, onPageChange })
                             <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
                                 <a
                                     className="page-link"
-                                    href="javascript:void(0);"
-                                    onClick={() => onPageChange(number)}
+                                    href="#"
+                                    onClick={(e) => { e.preventDefault(); onPageChange(number); }}
                                 >
                                     {number}
                                 </a>
@@ -54,8 +54,8 @@ const StrategyCardList = ({ strategies, currentPage, totalPages, onPageChange })
                         <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                             <a
                                 className="page-link"
-                                href="javascript:void(0);"
-                                onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
+                                href="#"
+                                onClick={(e) => { e.preventDefault(); currentPage < totalPages && onPageChange(currentPage + 1); }}
                             >
                                 »
                             </a>
@@ -65,8 +65,8 @@ const StrategyCardList = ({ strategies, currentPage, totalPages, onPageChange })
                         <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                             <a
                                 className="page-link"
-                                href="javascript:void(0);"
-                                onClick={() => onPageChange(totalPages)}
+                                href="#"
+                                onClick={(e) => { e.preventDefault(); onPageChange(totalPages); }}
                             >
                                 Last
                             </a>
