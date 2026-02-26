@@ -93,12 +93,12 @@ const DepositDetailsModal = ({ isOpen, onClose, depositData }) => {
 
                                         <div className="text-center my-4">
                                             <img
-                                                src="/assets/dashboard/images/wc-qr.png"
-                                                className="qr-code img-fluid rounded"
+                                                src={depositData.qrCode?.startsWith('http') ? depositData.qrCode : (depositData.qrCode ? `/assets/dashboard/images/${depositData.qrCode}` : `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${depositData.walletAddress}`)}
+                                                className="qr-code img-fluid rounded bg-white p-2"
                                                 alt="QR Code"
                                                 style={{ maxWidth: '200px', border: '1px solid #eee' }}
                                                 onError={(e) => {
-                                                    e.target.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + depositData.walletAddress;
+                                                    e.target.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${depositData.walletAddress}`;
                                                 }}
                                             />
                                         </div>

@@ -34,7 +34,7 @@ const DashboardDeposit = () => {
             // Generate a mock transaction ID
             const mockTxId = 'CNX-D-' + Math.floor(Math.random() * 1000000000000000);
 
-            // Open details modal
+            const activeWallet = wallets.find(w => w.id === selectedWallet);
             handleViewDetails({
                 id: mockTxId,
                 transactionId: 'TXN-' + Math.floor(Math.random() * 1000000),
@@ -43,10 +43,11 @@ const DashboardDeposit = () => {
                 email: 'bolajiakinduri@gmail.com',
                 phone: '2456780975',
                 date: new Date().toLocaleString(),
-                method: wallets.find(w => w.id === selectedWallet)?.name || 'Crypto',
+                method: activeWallet?.name || 'Crypto',
                 amount: amount,
-                walletType: wallets.find(w => w.id === selectedWallet)?.name || 'USDT TRC20',
-                walletAddress: 'TDUCHcHjnX7ZGjMAaXD66b8q8bq1BjjASj'
+                walletType: activeWallet?.name || 'USDT TRC20',
+                walletAddress: activeWallet?.address || 'TDUCHcHjnX7ZGjMAaXD66b8q8bq1BjjASj',
+                qrCode: activeWallet?.qrCode || null
             });
 
             setAmount('');

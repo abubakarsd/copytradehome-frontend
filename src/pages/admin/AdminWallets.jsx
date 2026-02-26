@@ -11,6 +11,7 @@ const AdminWallets = () => {
     const [wallets, setWallets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [viewQrWallet, setViewQrWallet] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         currency: '',
@@ -76,8 +77,12 @@ const AdminWallets = () => {
                 data.append('qrCode', formData.qrCodeFile);
             }
 
-            // Send FormData (Axios automatically sets Content-Type to multipart/form-data)
-            await api.post('/admin/wallets', data);
+            // Send FormData with explicit headers to override the default application/json
+            await api.post('/admin/wallets', data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
 
             toast.success('Wallet added successfully');
             setShowModal(false);
@@ -147,9 +152,16 @@ const AdminWallets = () => {
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-light" onClick={() => toast.info('Viewing QR Code')}>
-                                                        <i className="bx bx-qr-scan me-1"></i> View
-                                                    </button>
+                                                    {wallet.qrCode ? (
+                                                        <button
+                                                            className="btn btn-sm btn-light"
+                                                            onClick={() => setViewQrWallet(wallet)}
+                                                        >
+                                                            <i className="bx bx-qr-scan me-1"></i> View
+                                                        </button>
+                                                    ) : (
+                                                        <span className="text-muted fs-12">No QR</span>
+                                                    )}
                                                 </td>
                                                 <td>
                                                     <div className="hstack gap-2 fs-15">
@@ -166,6 +178,24 @@ const AdminWallets = () => {
                     </div>
                 </div>
             </div>
+
+            {/* View QR Modal */}
+            {viewQrWallet && (
+                <div className="modal fade show" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-dialog modal-dialog-centered modal-sm">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{viewQrWallet.name} QR Code</h5>
+                                <button type="button" className="btn-close" onClick={() => setViewQrWallet(null)}></button>
+                            </div>
+                            <div className="modal-body text-center p-4">
+                                <img src={viewQrWallet.qrCode?.startsWith('http') ? viewQrWallet.qrCode : `/assets/dashboard/images/${viewQrWallet.qrCode}`} alt="QR Code" className="img-fluid rounded border p-2" style={{ maxWidth: '200px' }} />
+                                <div className="mt-3 fs-14 fw-semibold text-break">{viewQrWallet.address}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Modal */}
             {showModal && (

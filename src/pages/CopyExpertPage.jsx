@@ -26,7 +26,6 @@ const CopyExpertPage = () => {
                     monthlyReturn: parseFloat(expert.profitShare),
                     risk: 4, // Default
                     investors: expert.copiers,
-                    id: expert._id,
                     minInvestment: 100,
                     description: `Professional trader with ${expert.winRate}% win rate.`,
                     isPopular: expert.copiers > 50,
