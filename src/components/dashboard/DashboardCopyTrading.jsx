@@ -1,9 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import api from '../../utils/axios';
 
 const DashboardCopyTrading = () => {
+    const [wallet, setWallet] = useState(null);
+
     useEffect(() => {
+        const fetchWallet = async () => {
+            try {
+                const res = await api.get('/wallet');
+                if (res.data.success) {
+                    setWallet(res.data.data);
+                }
+            } catch (err) {
+                console.error('Failed to fetch wallet:', err);
+            }
+        };
+        fetchWallet();
         // Initialize Swiper
         if (typeof window.Swiper !== 'undefined' && document.querySelector('.stocks-swiper')) {
             new window.Swiper(".stocks-swiper", {
@@ -131,6 +144,120 @@ const DashboardCopyTrading = () => {
                     </div>
                 </div>
                 {/* End::page-header */}
+
+                {/* Account Overview Metrics Row */}
+                <div className="row mb-3">
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Estimated Balance</p>
+                                        <h4 className="fw-semibold mb-1">
+                                            {wallet?.balance ? `$${wallet.balance.toFixed(2)}` : '$0.00'}
+                                        </h4>
+                                        <div className="text-success fs-12">
+                                            <i className="bx bx-up-arrow-alt"></i> +0.00% Today
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-primary-transparent fs-20">
+                                        <i className="bx bx-wallet"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Total Profit/Loss</p>
+                                        <h4 className="fw-semibold mb-1 text-success">
+                                            +$0.00
+                                        </h4>
+                                        <div className="text-muted fs-12">
+                                            All Time Returns
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-success-transparent fs-20">
+                                        <i className="bx bx-trending-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Active Investments</p>
+                                        <h4 className="fw-semibold mb-1">
+                                            0
+                                        </h4>
+                                        <div className="text-muted fs-12">
+                                            Positions
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-warning-transparent fs-20">
+                                        <i className="bx bx-briefcase"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Available Cash</p>
+                                        <h4 className="fw-semibold mb-1">
+                                            {wallet?.balance ? `$${wallet.balance.toFixed(2)}` : '$0.00'}
+                                        </h4>
+                                        <div className="text-muted fs-12">
+                                            Ready to invest
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-info-transparent fs-20">
+                                        <i className="bx bx-dollar-circle"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* End Account Overview Metrics Row */}
+
+                {/* Quick Actions Bar */}
+                <div className="row mb-3">
+                    <div className="col-xl-12">
+                        <div className="card custom-card">
+                            <div className="card-body p-3">
+                                <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Link to="/dashboard/deposit" className="btn btn-primary d-flex align-items-center gap-2">
+                                            <i className="bx bx-down-arrow-circle fs-18"></i> Deposit
+                                        </Link>
+                                        <Link to="/dashboard/withdraw" className="btn btn-outline-primary d-flex align-items-center gap-2">
+                                            <i className="bx bx-up-arrow-circle fs-18"></i> Withdraw
+                                        </Link>
+                                    </div>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Link to="/dashboard/crypto" className="btn btn-outline-secondary d-flex align-items-center gap-2">
+                                            <i className="bx bx-bitcoin fs-18"></i> Trade Crypto
+                                        </Link>
+                                        <Link to="/dashboard/copy-experts" className="btn btn-outline-success d-flex align-items-center gap-2">
+                                            <i className="bx bx-user-check fs-18"></i> Copy Expert
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* End Quick Actions Bar */}
 
                 {/* My Copy Traders (Swiper) */}
                 <div className="row mb-3">

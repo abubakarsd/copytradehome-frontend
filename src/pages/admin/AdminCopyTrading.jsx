@@ -138,7 +138,7 @@ const AdminCopyTrading = () => {
                                                     <div className="d-flex align-items-center">
                                                         <span className="avatar avatar-sm me-2">
                                                             <img
-                                                                src={expert.avatar?.startsWith('data:image') || expert.avatar?.startsWith('http') ? expert.avatar : `/assets/dashboard/images/${expert.avatar}`}
+                                                                src={expert.avatar?.startsWith('http') || expert.avatar?.startsWith('data:image') ? expert.avatar : `/assets/dashboard/images/${expert.avatar}`}
                                                                 alt={expert.name}
                                                                 onError={(e) => { e.target.error = null; e.target.src = '/assets/dashboard/images/21.jpg' }}
                                                             />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../utils/axios';
 
 const DashboardPortfolio = () => {
@@ -61,6 +62,73 @@ const DashboardPortfolio = () => {
         window.showToastMessage = () => window.showAppToast('error', 'QR Connect is not available at the moment, please try connecting manually!');
         window.updateChartColor = (val) => { console.log('Update chart color not implemented fully yet', val); };
 
+        // --- Allocation Donut Chart Init ---
+        const initAllocationChart = () => {
+            if (window.ApexCharts && document.querySelector("#portfolio-allocation-chart")) {
+                const options = {
+                    series: [0, 0, 100],
+                    labels: ['Crypto', 'Stocks', 'Cash'],
+                    chart: {
+                        type: 'donut',
+                        height: 300,
+                    },
+                    colors: ['var(--primary-color)', '#23b7e5', '#f5b849'],
+                    legend: {
+                        show: false
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        show: false
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                size: '75%',
+                                labels: {
+                                    show: true,
+                                    name: {
+                                        show: true,
+                                        fontSize: '14px',
+                                        color: '#8c9097',
+                                        offsetY: -5
+                                    },
+                                    value: {
+                                        show: true,
+                                        fontSize: '24px',
+                                        fontWeight: 600,
+                                        color: '#333',
+                                        offsetY: 8,
+                                        formatter: function (val) {
+                                            return val + "%"
+                                        }
+                                    },
+                                    total: {
+                                        show: true,
+                                        showAlways: true,
+                                        label: 'Cash',
+                                        fontSize: '14px',
+                                        color: '#8c9097',
+                                        formatter: function (w) {
+                                            return '100%'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                // Clear any existing chart before rendering
+                document.querySelector("#portfolio-allocation-chart").innerHTML = '';
+                const chart = new window.ApexCharts(document.querySelector("#portfolio-allocation-chart"), options);
+                chart.render();
+            } else {
+                setTimeout(initAllocationChart, 500);
+            }
+        };
+        initAllocationChart();
 
         // --- TradingView Init ---
         const initTV = () => {
@@ -146,22 +214,125 @@ const DashboardPortfolio = () => {
                 </div>
                 {/* End::page-header */}
 
-                {/* My Portfolio - Stocks */}
+                {/* Account Overview Metrics Row */}
                 <div className="row mb-3">
-                    <div className="col-xl-12">
-                        <h6 className="fw-semibold mb-3">Stocks</h6>
-                        <div className="">
-                            <div className="">
-                                <p className="mb-0 text-muted">You don’t have any stock positions yet.</p>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Estimated Balance</p>
+                                        <h4 className="fw-semibold mb-1">
+                                            {wallet?.balance ? `$${wallet.balance.toFixed(2)}` : '$0.00'}
+                                        </h4>
+                                        <div className="text-success fs-12">
+                                            <i className="bx bx-up-arrow-alt"></i> +0.00% Today
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-primary-transparent fs-20">
+                                        <i className="bx bx-wallet"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Total Profit/Loss</p>
+                                        <h4 className="fw-semibold mb-1 text-success">
+                                            +$0.00
+                                        </h4>
+                                        <div className="text-muted fs-12">
+                                            All Time Returns
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-success-transparent fs-20">
+                                        <i className="bx bx-trending-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Active Investments</p>
+                                        <h4 className="fw-semibold mb-1">
+                                            0
+                                        </h4>
+                                        <div className="text-muted fs-12">
+                                            Positions
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-warning-transparent fs-20">
+                                        <i className="bx bx-briefcase"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 mb-3">
+                        <div className="card custom-card">
+                            <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <p className="fw-semibold text-muted mb-1">Available Cash</p>
+                                        <h4 className="fw-semibold mb-1">
+                                            {wallet?.balance ? `$${wallet.balance.toFixed(2)}` : '$0.00'}
+                                        </h4>
+                                        <div className="text-muted fs-12">
+                                            Ready to invest
+                                        </div>
+                                    </div>
+                                    <div className="avatar avatar-md bg-info-transparent fs-20">
+                                        <i className="bx bx-dollar-circle"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {/* End:: row-2 */}
+                {/* End Account Overview Metrics Row */}
 
-                {/* Portfolio Analysis & Watchlist */}
+                {/* Quick Actions Bar */}
+                <div className="row mb-3">
+                    <div className="col-xl-12">
+                        <div className="card custom-card">
+                            <div className="card-body p-3">
+                                <div className="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Link to="/dashboard/deposit" className="btn btn-primary d-flex align-items-center gap-2">
+                                            <i className="bx bx-down-arrow-circle fs-18"></i> Deposit
+                                        </Link>
+                                        <Link to="/dashboard/withdraw" className="btn btn-outline-primary d-flex align-items-center gap-2">
+                                            <i className="bx bx-up-arrow-circle fs-18"></i> Withdraw
+                                        </Link>
+                                    </div>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <Link to="/dashboard/crypto" className="btn btn-outline-secondary d-flex align-items-center gap-2">
+                                            <i className="bx bx-bitcoin fs-18"></i> Trade Crypto
+                                        </Link>
+                                        <Link to="/dashboard/copy-experts" className="btn btn-outline-success d-flex align-items-center gap-2">
+                                            <i className="bx bx-user-check fs-18"></i> Copy Expert
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* End Quick Actions Bar */}
+
+
+
+                {/* Portfolio Analysis & Allocation */}
                 <div className="row">
-                    <div className="col-xxl-9">
+                    <div className="col-xxl-8">
                         <div className="card custom-card">
                             <div className="card-header justify-content-between">
                                 <div className="card-title">
@@ -201,25 +372,89 @@ const DashboardPortfolio = () => {
                                 <div id="tv-portfolio-analysis" style={{ 'minHeight': '382px' }}><div id="tradingview_09b69-wrapper" style={{ 'position': 'relative', 'boxSizing': 'content-box', 'fontFamily': '-apple-system, BlinkMacSystemFont, &quot', 'margin': '0px auto', 'padding': '0px', 'width': '100%', 'height': '382px' }}><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_09b69" frameBorder="0" allowtransparency="true" scrolling="no" allowFullScreen={true} src="/assets/dashboard/saved_resource.html" style={{ 'width': '100%', 'height': '100%', 'margin': '0px', 'padding': '0px' }}></iframe></div></div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Stock Portfolio P&L Bar Chart */}
-                        <div className="row mt-3">
-                            <div className="col-xxl-12">
-                                <div className="card custom-card">
-                                    <div className="card-header">
-                                        <div className="card-title">
-                                            Stock Portfolio P&amp;L
-                                        </div>
+                    <div className="col-xxl-4">
+                        {/* Asset Allocation Donut Chart */}
+                        <div className="card custom-card">
+                            <div className="card-header">
+                                <div className="card-title">
+                                    Asset Allocation
+                                </div>
+                            </div>
+                            <div className="card-body">
+                                <div id="portfolio-allocation-chart" className="d-flex justify-content-center" style={{ minHeight: '300px' }}></div>
+                                <div className="row text-center mt-4">
+                                    <div className="col-4">
+                                        <span className="fw-semibold d-block">0%</span>
+                                        <span className="text-muted fs-12 d-block text-truncate"><i className="bx bxs-circle text-primary me-1"></i>Crypto</span>
                                     </div>
-                                    <div className="card-body">
-                                        <p className="mb-0 text-muted">You don’t have any stock portfolios yet.</p>
+                                    <div className="col-4">
+                                        <span className="fw-semibold d-block">0%</span>
+                                        <span className="text-muted fs-12 d-block text-truncate"><i className="bx bxs-circle text-success me-1"></i>Stocks</span>
+                                    </div>
+                                    <div className="col-4">
+                                        <span className="fw-semibold d-block">100%</span>
+                                        <span className="text-muted fs-12 d-block text-truncate"><i className="bx bxs-circle text-warning me-1"></i>Cash</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {/* End Asset Allocation Donut Chart */}
+
+                        {/* Recent Activity */}
+                        <div className="card custom-card mt-3">
+                            <div className="card-header justify-content-between">
+                                <div className="card-title">Recent Activity</div>
+                                <a href="#" className="text-muted fs-13">View All</a>
+                            </div>
+                            <div className="card-body">
+                                <ul className="list-unstyled mb-0 list-Activity">
+                                    <li className="d-flex justify-content-between align-items-center mb-3">
+                                        <div className="d-flex align-items-center gap-3">
+                                            <div className="avatar avatar-sm bg-primary-transparent text-primary">
+                                                <i className="bx bx-wallet"></i>
+                                            </div>
+                                            <div>
+                                                <p className="mb-0 fw-semibold">Account Created</p>
+                                                <span className="fs-12 text-muted">Welcome to CopyTradeHome</span>
+                                            </div>
+                                        </div>
+                                        <div className="text-muted fs-12">Just Now</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {/* End Recent Activity */}
+                    </div>
+                </div>
+
+                <div className="row mt-3">
+                    <div className="col-xxl-8">
+                        {/* My Portfolio - Stocks */}
+                        <div className="card custom-card">
+                            <div className="card-header">
+                                <div className="card-title">Stocks Portfolio</div>
+                            </div>
+                            <div className="card-body">
+                                <p className="mb-0 text-muted">You don’t have any stock positions yet.</p>
+                            </div>
+                        </div>
+
+                        {/* Stock Portfolio P&L Bar Chart */}
+                        <div className="card custom-card mt-3">
+                            <div className="card-header">
+                                <div className="card-title">
+                                    Stock Portfolio P&amp;L
+                                </div>
+                            </div>
+                            <div className="card-body">
+                                <p className="mb-0 text-muted">No profit/loss data available yet.</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="col-xxl-3">
+                    <div className="col-xxl-4">
                         <div className="card custom-card">
                             <div className="card-header justify-content-between">
                                 <div className="card-title">
